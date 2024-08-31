@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="Fo1ut9" name="BeastySynth1" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              pluginManufacturer="SoundMonkeys">
+  <MAINGROUP id="lNRTCf" name="BeastySynth1">
+    <GROUP id="{613AEEB8-A650-72D9-3562-05776277BAFC}" name="Source">
+      <GROUP id="{67E6D658-0EB0-B073-0B73-6856B67FEFAA}" name="Resources">
+        <GROUP id="{991E654D-D7A0-5B8B-65C0-DF7697FC79C4}" name="IRDistortion">
+          <FILE id="R5wa3W" name="Brohymn Mesa 4x12 SM57 V30 1.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 1.wav"/>
+          <FILE id="yKlVnz" name="Brohymn Mesa 4x12 SM57 V30 2.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 2.wav"/>
+          <FILE id="yiWqxX" name="Brohymn Mesa 4x12 SM57 V30 3.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 3.wav"/>
+          <FILE id="DaNv20" name="Brohymn-Mesa-4x12-SM57-V30-4.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-4.wav"/>
+          <FILE id="QYzAIn" name="Brohymn-Mesa-4x12-SM57-V30-5.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-5.wav"/>
+          <FILE id="mxYTNg" name="Brohymn-Mesa-4x12-SM57-V30-6.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-6.wav"/>
+          <FILE id="bfUp0C" name="ExcaliburBright1.wav" compile="0" resource="1"
+                file="Source/Resources/IRDistortion/ExcaliburBright1.wav"/>
+          <FILE id="eHl0JR" name="ExcaliburDark1.wav" compile="0" resource="1"
+                file="Source/Resources/IRDistortion/ExcaliburDark1.wav"/>
+          <FILE id="XQxwxC" name="ExcaliburNeutral.wav" compile="0" resource="1"
+                file="Source/Resources/IRDistortion/ExcaliburNeutral.wav"/>
+          <FILE id="on2cch" name="LT Brit 412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT Brit 412.wav"/>
+          <FILE id="nOxUva" name="LT MARV412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT MARV412.wav"/>
+          <FILE id="svuWam" name="LT TV Mix.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT TV Mix.wav"/>
+        </GROUP>
+      </GROUP>
+      <FILE id="X06fzi" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="VML223" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="HBuPgq" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="XTel6L" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="Lx3TKk" name="SynthVoice.cpp" compile="1" resource="0" file="Source/SynthVoice.cpp"/>
+      <FILE id="FjubYb" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="iUYzpo" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      <GROUP id="{6CA221D5-7333-0DE3-447F-EF866D98A231}" name="Data">
+        <FILE id="ACYMas" name="ADSR1Data.cpp" compile="1" resource="0" file="Source/Data/ADSR1Data.cpp"/>
+        <FILE id="LfrAIt" name="ADSR1Data.h" compile="0" resource="0" file="Source/Data/ADSR1Data.h"/>
+        <FILE id="xzyI5r" name="ConvDistortionData.cpp" compile="1" resource="0"
+              file="Source/Data/ConvDistortionData.cpp"/>
+        <FILE id="hT6S7V" name="ConvDistortionData.h" compile="0" resource="0"
+              file="Source/Data/ConvDistortionData.h"/>
+        <FILE id="HsEF1A" name="FilterData.cpp" compile="1" resource="0" file="Source/Data/FilterData.cpp"/>
+        <FILE id="lqVX14" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
+        <FILE id="w8p8KZ" name="MSCompressorData.cpp" compile="1" resource="0"
+              file="Source/Data/MSCompressorData.cpp"/>
+        <FILE id="v9CVkK" name="MSCompressorData.h" compile="0" resource="0"
+              file="Source/Data/MSCompressorData.h"/>
+        <FILE id="OHsnPd" name="OscData.cpp" compile="1" resource="0" file="Source/Data/OscData.cpp"/>
+        <FILE id="Z04nb0" name="OscData.h" compile="0" resource="0" file="Source/Data/OscData.h"/>
+        <FILE id="Bog7Cc" name="OscSubData.cpp" compile="1" resource="0" file="Source/Data/OscSubData.cpp"/>
+        <FILE id="Pnt05v" name="OscSubData.h" compile="0" resource="0" file="Source/Data/OscSubData.h"/>
+        <FILE id="FL2RC8" name="Reverb1Data.cpp" compile="1" resource="0" file="Source/Data/Reverb1Data.cpp"/>
+        <FILE id="EtzLhI" name="Reverb1Data.h" compile="0" resource="0" file="Source/Data/Reverb1Data.h"/>
+        <FILE id="cccD1P" name="UnisonOsc.cpp" compile="1" resource="0" file="Source/Data/UnisonOsc.cpp"/>
+        <FILE id="FlQRLi" name="UnisonOsc.h" compile="0" resource="0" file="Source/Data/UnisonOsc.h"/>
+        <FILE id="Z4X0Pk" name="WaveShaperData.cpp" compile="1" resource="0"
+              file="Source/Data/WaveShaperData.cpp"/>
+        <FILE id="ObPKgE" name="WaveShaperData.h" compile="0" resource="0"
+              file="Source/Data/WaveShaperData.h"/>
+      </GROUP>
+      <GROUP id="{8F4D995E-A636-4B4F-A3FF-6465555570B5}" name="UI">
+        <FILE id="UY7OaZ" name="ADSR1Component.cpp" compile="1" resource="0"
+              file="Source/UI/ADSR1Component.cpp"/>
+        <FILE id="sEFIw6" name="ADSR1Component.h" compile="0" resource="0"
+              file="Source/UI/ADSR1Component.h"/>
+        <FILE id="Jbnn4D" name="ConvDistortionComponent.cpp" compile="1" resource="0"
+              file="Source/UI/ConvDistortionComponent.cpp"/>
+        <FILE id="pvgQDu" name="ConvDistortionComponent.h" compile="0" resource="0"
+              file="Source/UI/ConvDistortionComponent.h"/>
+        <FILE id="e9Pxja" name="CustomComponents.cpp" compile="1" resource="0"
+              file="Source/UI/CustomComponents.cpp"/>
+        <FILE id="MWQxQi" name="CustomComponents.h" compile="0" resource="0"
+              file="Source/UI/CustomComponents.h"/>
+        <FILE id="XwaOYh" name="FilterComponent.cpp" compile="1" resource="0"
+              file="Source/UI/FilterComponent.cpp"/>
+        <FILE id="n8KOaW" name="FilterComponent.h" compile="0" resource="0"
+              file="Source/UI/FilterComponent.h"/>
+        <FILE id="z1Fw23" name="MSCompressorComponent.cpp" compile="1" resource="0"
+              file="Source/UI/MSCompressorComponent.cpp"/>
+        <FILE id="qZxpQK" name="MSCompressorComponent.h" compile="0" resource="0"
+              file="Source/UI/MSCompressorComponent.h"/>
+        <FILE id="cWa6yu" name="OscComponent.cpp" compile="1" resource="0"
+              file="Source/UI/OscComponent.cpp"/>
+        <FILE id="BE3UEK" name="OscComponent.h" compile="0" resource="0" file="Source/UI/OscComponent.h"/>
+        <FILE id="WC3Kcb" name="OscSubComponent.cpp" compile="1" resource="0"
+              file="Source/UI/OscSubComponent.cpp"/>
+        <FILE id="mZykc8" name="OscSubComponent.h" compile="0" resource="0"
+              file="Source/UI/OscSubComponent.h"/>
+        <FILE id="DJQs15" name="Reverb1Component.cpp" compile="1" resource="0"
+              file="Source/UI/Reverb1Component.cpp"/>
+        <FILE id="N3GUWv" name="Reverb1Component.h" compile="0" resource="0"
+              file="Source/UI/Reverb1Component.h"/>
+        <FILE id="n7CRzZ" name="WaveShaperComponent.cpp" compile="1" resource="0"
+              file="Source/UI/WaveShaperComponent.cpp"/>
+        <FILE id="yGBMGl" name="WaveShaperComponent.h" compile="0" resource="0"
+              file="Source/UI/WaveShaperComponent.h"/>
+      </GROUP>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="BeastySynth1" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="BeastySynth1" enablePluginBinaryCopyStep="1"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+</JUCERPROJECT>
