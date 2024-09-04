@@ -17,7 +17,7 @@ class OscData : public juce::dsp::Oscillator<float>
 public:
     void prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRate, int samplesPerBlock, int outputChannels);
     float processNextSample(float input);
-    void renderNextBlock(juce::AudioBuffer<float>& buffer, int startSample, int numSamples);
+    void renderNextBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples);
     void setWaveType(const int choice);
     void updateOscParams(const int& oscWaveChoice, const float& osc1Macro, const int& transposition,
         const float& gain, const float& pan, const int& uniVoices, const float& uniWidth, const float& uniSpread);
@@ -30,7 +30,7 @@ public:
     //void setFmOsc(const float freq);
 
 private:
-    juce::dsp::Oscillator<float> fmOsc{ [](float x) { return std::sin(x); } };
+    //juce::dsp::Oscillator<float> fmOsc{ [](float x) { return std::sin(x); } };
     std::function< NumericType(NumericType)> currentWaveType = [](float x) { return std::sin(x); };
 
     // Unison Voices

@@ -44,7 +44,7 @@ void CustomComponents::resized()
 
 //==============================================================================
 
-void AnimatedKnobMedium::createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String paramID, juce::String labelString)
+void AnimatedKnobMedium::createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& paramID, juce::String labelString)
 {
     setSize(knobRadius, knobRadius + (2 * labelHeight));
 
@@ -71,6 +71,25 @@ void AnimatedKnobMedium::setBoundsKnobWithLabel(int xPos, int yPos)
 void AnimatedKnobMedium::paint(juce::Graphics& g)
 {
     //g.fillAll(juce::Colours::darkgrey);
+    g.setColour(juce::Colours::ghostwhite);
+    g.drawRect(getLocalBounds().reduced(5));
+}
+
+void ComboBoxMedium::createComboBox(juce::AudioProcessorValueTreeState& apvts, juce::String& comboBoxID, juce::StringArray& choices)
+{
+    comboBox.addItemList(choices, 1);
+    addAndMakeVisible(comboBox);
+    attachment = std::make_unique<ComboBoxAttachment>(apvts, comboBoxID, comboBox);
+}
+
+void ComboBoxMedium::setBoundsComboBox(int xPos, int yPos)
+{
+    setBounds(xPos, yPos, selectorWidth, selectorHeight);
+    comboBox.setBounds(0, 0, selectorWidth, selectorHeight);
+}
+
+void ComboBoxMedium::paint(juce::Graphics& g)
+{
     g.setColour(juce::Colours::ghostwhite);
     g.drawRect(getLocalBounds().reduced(5));
 }

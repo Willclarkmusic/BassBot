@@ -15,9 +15,10 @@ BEGIN
   BEGIN
     BLOCK "040904E4"
     BEGIN
-      VALUE "FileDescription",  "BeastySynth1\0"
+      VALUE "CompanyName",  "Audio Bots\0"
+      VALUE "FileDescription",  "BassBot\0"
       VALUE "FileVersion",  "1.0.0\0"
-      VALUE "ProductName",  "BeastySynth1\0"
+      VALUE "ProductName",  "BassBot\0"
       VALUE "ProductVersion",  "1.0.0\0"
     END
   END

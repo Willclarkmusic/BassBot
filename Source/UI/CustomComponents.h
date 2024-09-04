@@ -33,7 +33,7 @@ private:
 class AnimatedKnobMedium : public juce::Component
 {
 public:
-    void createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String waveSelectorID, juce::String labelString);
+    void createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& waveSelectorID, juce::String labelString);
     void setBoundsKnobWithLabel(int xPos, int yPos);
     void paint(juce::Graphics& g) override;
 
@@ -48,4 +48,23 @@ private:
     juce::Slider slider;
     std::unique_ptr<SliderAttachment> attachment;
     juce::Label label;
+};
+
+class ComboBoxMedium : public juce::Component
+{
+public:
+    void createComboBox(juce::AudioProcessorValueTreeState& apvts, juce::String& comboBoxID, juce::StringArray& choices);
+    void setBoundsComboBox(int xPos, int yPos);
+    void paint(juce::Graphics& g) override;
+
+private:
+    using ComboBoxAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
+
+    int padding = 5;
+    int selectorWidth = 60;
+    int selectorHeight = 20;
+
+    juce::ComboBox comboBox;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> attachment;
+    juce::StringArray choices;
 };

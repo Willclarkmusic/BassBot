@@ -18,9 +18,10 @@ bool SynthVoice::canPlaySound(juce::SynthesiserSound* sound)
 
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
-    for (int v = 0; v < 2; v++)
+    for (int v = 0; v < numVoicesToProcess; v++)
     {
         osc1[v].setWaveFrequency(midiNoteNumber);
+        osc2[v].setWaveFrequency(midiNoteNumber);
         oscSub[v].setWaveFrequency(midiNoteNumber - 12);
     }
     
@@ -58,14 +59,19 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
     spec.sampleRate = sampleRate;
     spec.numChannels = outputChannels;
 
-    for (int ch = 0; ch < numChannelsToProcess; ch++)
+    for (int v = 0; v < numVoicesToProcess; v++)
     {
-        osc1[ch].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
-        oscSub[ch].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
+        osc1[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
+        osc2[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
+        oscSub[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
+        
     }
 
-    oscOneGain.prepare(spec);
-    oscOneGain.setGainLinear(0.6f);
+    osc1Gain.prepare(spec);
+    osc1Gain.setGainLinear(0.6f);
+
+    osc2Gain.prepare(spec);
+    osc2Gain.setGainLinear(0.6f);
 
     oscSubGain.prepare(spec);
     oscSubGain.setGainLinear(0.6f);
@@ -93,22 +99,33 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     // mod activations
     adsr2.applyEnvelopeToBuffer(outputBuffer, 0, osc1Buffer.getNumSamples());
+
     osc1Buffer.clear();
 
-    for (int v = 0; v < numChannelsToProcess; v++) // process each oscillator voice
-        osc1[v].renderNextBlock(osc1Buffer, startSample, numSamples);
+    for (int v = 0; v < numVoicesToProcess; v++) // process each oscillator voice
+        osc1[v].renderNextBuffer(osc1Buffer, startSample, numSamples);
 
     juce::dsp::AudioBlock<float> osc1Block{ osc1Buffer };
-
-    oscOneGain.process(juce::dsp::ProcessContextReplacing<float>(osc1Block));
+    osc1Gain.process(juce::dsp::ProcessContextReplacing<float>(osc1Block));
 
     adsr1.applyEnvelopeToBuffer(osc1Buffer, 0, osc1Buffer.getNumSamples());
 
     filter1.process(osc1Buffer);
-
     convDist1.process(osc1Buffer);
-
     reverb1.renderNextBlock(osc1Buffer);
+
+
+    //Osc2 Audio Bus
+    osc2Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    osc2Buffer.clear();
+
+    for (int v = 0; v < numVoicesToProcess; v++) // process each oscillator voice
+        osc2[v].renderNextBuffer(osc2Buffer, startSample, numSamples);
+
+    juce::dsp::AudioBlock<float> osc2Block{ osc2Buffer };
+    osc2Gain.process(juce::dsp::ProcessContextReplacing<float>(osc2Block));
+
+    adsr1.applyEnvelopeToBuffer(osc2Buffer, 0, osc2Buffer.getNumSamples());
 
 
     //OscSub Audio Bus
@@ -117,8 +134,8 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     juce::dsp::AudioBlock<float> oscSubBlock{ oscSubBuffer };
 
-    for (int ch = 0; ch < numChannelsToProcess; ch++)
-        oscSub[ch].renderNextBlock(oscSubBlock);
+    for (int v = 0; v < numVoicesToProcess; v++)
+        oscSub[v].renderNextBlock(oscSubBlock);
 
     oscSubGain.process(juce::dsp::ProcessContextReplacing<float>(oscSubBlock));
 
@@ -126,10 +143,12 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     waveShaper1.renderNextBlock(oscSubBlock);
 
+
     // Add OSC chains to output buffer
     for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++)
     {
         outputBuffer.addFrom(channel, startSample, osc1Buffer, channel, 0, numSamples, 0.3f); // Gain on the end for mixer
+        outputBuffer.addFrom(channel, startSample, osc2Buffer, channel, 0, numSamples, 0.3f); // Gain on the end for mixer
         outputBuffer.addFrom(channel, startSample, oscSubBuffer, channel, 0, numSamples, 0.3f);
 
         if (! adsr1.isActive())
@@ -147,7 +166,10 @@ void SynthVoice::updateFilter(const int filterType, const int filterDBOct, const
 
 void SynthVoice::reset()
 {
-    oscOneGain.reset();
+    osc1Gain.reset();
+    osc2Gain.reset();
+    oscSubGain.reset();
     adsr1.reset();
+    adsr2.reset();
     //filterAdsr.reset();
 }

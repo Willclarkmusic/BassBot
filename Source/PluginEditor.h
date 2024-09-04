@@ -9,9 +9,12 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PresetComponent.h"
 #include "PluginProcessor.h"
+
 #include "UI/ADSR1Component.h"
 #include "UI/OscComponent.h"
+#include "UI/WTOscComponent.h"
 #include "UI/FilterComponent.h"
 #include "UI/ConvDistortionComponent.h"
 #include "UI/OscSubComponent.h"
@@ -34,18 +37,23 @@ public:
     void resized() override;
 
 private:   
+    PresetComponent::PresetPanel presetPanel;
     BeastySynth1AudioProcessor& audioProcessor;
-    OscComponent osc1;
-    ADSR1Component adsr1;
-    FilterComponent filter1;
-    ADSR1Component adsr2;
 
+
+
+    OscComponent osc1;
+    FilterComponent filter1;
     ConvDistortionComponent convDist1;
+    Reverb1Component reverb1;
+
+    WTOscComponent osc2;
+
+    ADSR1Component adsr1;
+    ADSR1Component adsr2;
 
     OscSubComponent oscSub;
     WaveShaperComponent waveShaper1;
-
-    Reverb1Component reverb1;
 
     MSCompressorComponent MSCompressor;
 

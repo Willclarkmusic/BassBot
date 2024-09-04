@@ -1,69 +1,73 @@
 /*
   ==============================================================================
 
-    OscComponent.cpp
-    Created: 15 Aug 2024 11:37:38am
+    WTOscComponent.cpp
+    Created: 2 Sep 2024 12:39:57pm
     Author:  BB8
 
   ==============================================================================
 */
 
-
-#include "OscComponent.h"
-
+#include <JuceHeader.h>
+#include "WTOscComponent.h"
 //==============================================================================
-OscComponent::OscComponent(juce::AudioProcessorValueTreeState& apvts, juce::String waveSelectorId, 
-    juce::String macroID, juce::String transID, juce::String gainID, juce::String panID, 
-    juce::String unisonID, juce::String widthID, juce::String spreadID)
+WTOscComponent::WTOscComponent(BeastySynth1AudioProcessor& processor, juce::AudioProcessorValueTreeState& apvts,
+    juce::String waveSelectorId, juce::String morphID, juce::String transID, juce::String gainID,
+    juce::String panID, juce::String unisonID, juce::String widthID, juce::String spreadID)
+    : audioProcessor(processor)
 {
     // Wave select
-    juce::StringArray choices{ "Sin", "Saw", "Squ" };
+    juce::StringArray choices{ audioProcessor.getWaveTableFiles() };
+    for (int i = 0; i < choices.size(); i++)
+    {
+        choices.set(i, juce::File(choices[i]).getFileNameWithoutExtension());
+    }
     waveSelector.createComboBox(apvts, waveSelectorId, choices);
     addAndMakeVisible(waveSelector);
 
     // Osc Pitch and gain control
-    macroKnob.createKnobWithLabel(apvts, macroID, "Macro");
-    addAndMakeVisible(macroKnob);
+    morphKnob.createKnobWithLabel(apvts, morphID, "Morph");
+    addAndMakeVisible(morphKnob);
     transKnob.createKnobWithLabel(apvts, transID, "Trans");
-    addAndMakeVisible(transKnob); 
+    addAndMakeVisible(transKnob);
     gainKnob.createKnobWithLabel(apvts, gainID, "Gain");
-    addAndMakeVisible(gainKnob); 
+    addAndMakeVisible(gainKnob);
     panKnob.createKnobWithLabel(apvts, panID, "Pan");
-    addAndMakeVisible(panKnob); 
+    addAndMakeVisible(panKnob);
     unisonKnob.createKnobWithLabel(apvts, unisonID, "Unison");
-    addAndMakeVisible(unisonKnob); 
+    addAndMakeVisible(unisonKnob);
     widthKnob.createKnobWithLabel(apvts, widthID, "Width");
-    addAndMakeVisible(widthKnob); 
+    addAndMakeVisible(widthKnob);
     spreadKnob.createKnobWithLabel(apvts, spreadID, "Spread");
-    addAndMakeVisible(spreadKnob); 
+    addAndMakeVisible(spreadKnob);
 }
 
-OscComponent::~OscComponent()
+WTOscComponent::~WTOscComponent()
 {
 }
 
-void OscComponent::paint (juce::Graphics& g)
+void WTOscComponent::paint(juce::Graphics& g)
 {
     g.fillAll(juce::Colours::black);
     g.setColour(juce::Colours::ghostwhite);
     g.drawRect(getLocalBounds().reduced(2));
 }
 
-void OscComponent::resized()
+void WTOscComponent::resized()
 {
     const auto padding = 5;
     const auto bounds = getLocalBounds().reduced(10);
 
     // Wave Selector menu
     const auto selectorWidth = 60;
-    const auto selectorHeight = 20;    
+    const auto selectorHeight = 20;
     waveSelector.setBoundsComboBox((bounds.getWidth() / 3) * 2, 10);
 
     // OSC params draw
     const auto KnobStartX = padding;
     const auto KnobStartY = waveSelector.getBottom() + padding;
-    macroKnob.setBoundsKnobWithLabel(KnobStartX, KnobStartY);
-    transKnob.setBoundsKnobWithLabel(macroKnob.getRight(), KnobStartY);
+    morphKnob.setBoundsKnobWithLabel(KnobStartX, KnobStartY);
+    transKnob.setBoundsKnobWithLabel(morphKnob.getRight(), KnobStartY);
     gainKnob.setBoundsKnobWithLabel(transKnob.getRight(), KnobStartY);
     panKnob.setBoundsKnobWithLabel(gainKnob.getRight(), KnobStartY);
     unisonKnob.setBoundsKnobWithLabel(panKnob.getRight(), KnobStartY);

@@ -20,7 +20,8 @@ BeastySynth1AudioProcessor::BeastySynth1AudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       ), apvts(*this, nullptr, "Parameters", createParams())
+                       ), apvts(*this, nullptr, "Parameters", createParams()),
+                        presetManager(apvts)
 #endif
 {
     synth.addSound(new SynthSound());
@@ -36,8 +37,18 @@ BeastySynth1AudioProcessor::BeastySynth1AudioProcessor()
     apvts.addParameterListener("OSC1MACRO", this);
     apvts.addParameterListener("OSC1TRANS", this);
     apvts.addParameterListener("OSC1GAIN", this);
+    apvts.addParameterListener("OSC1PAN", this);
     apvts.addParameterListener("OSC1UNI", this);
     apvts.addParameterListener("OSC1WIDTH", this); 
+
+    //OSC 2
+    apvts.addParameterListener("OSC2WAVETABLE", this);
+    apvts.addParameterListener("OSC2MORPH", this);
+    apvts.addParameterListener("OSC2TRANS", this);
+    apvts.addParameterListener("OSC2GAIN", this);
+    apvts.addParameterListener("OSC2PAN", this);
+    apvts.addParameterListener("OSC2UNI", this);
+    apvts.addParameterListener("OSC2WIDTH", this); 
 
     //ADSR 1
     apvts.addParameterListener("ATT1", this);
@@ -71,6 +82,15 @@ BeastySynth1AudioProcessor::~BeastySynth1AudioProcessor()
     apvts.removeParameterListener("OSC1GAIN", this);
     apvts.removeParameterListener("OSC1UNI", this);
     apvts.removeParameterListener("OSC1WIDTH", this);
+
+    //OSC 2
+    apvts.removeParameterListener("OSC2WAVETABLE", this);
+    apvts.removeParameterListener("OSC2MORPH", this);
+    apvts.removeParameterListener("OSC2TRANS", this);
+    apvts.removeParameterListener("OSC2GAIN", this);
+    apvts.removeParameterListener("OSC2PAN", this);
+    apvts.removeParameterListener("OSC2UNI", this);
+    apvts.removeParameterListener("OSC2WIDTH", this);
 
     //ADSR 1
     apvts.removeParameterListener("ATT1", this);
@@ -171,9 +191,18 @@ void BeastySynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
+            auto& osc2 = voice->getOscillator2();
+            for (int i = 0; i < getTotalNumOutputChannels(); i++)
+            {
+                auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETABLE");
+                osc2[i].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
+            }
+
             voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
         }
     }
+
+
         
     MSCompressor.prepareToPlay(spec, sampleRate, samplesPerBlock, getTotalNumInputChannels());
 }
@@ -244,6 +273,23 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
                     osc1UniVoices, osc1UniWidth, osc1UniSpread);
             }
 
+            // OSC2
+            auto& osc2 = voice->getOscillator2();
+
+            auto& osc2Morph = *apvts.getRawParameterValue("OSC2MORPH");
+            auto& osc2Trans = *apvts.getRawParameterValue("OSC2TRANS");
+            auto& osc2Gain = *apvts.getRawParameterValue("OSC2GAIN");
+            auto& osc2Pan = *apvts.getRawParameterValue("OSC2PAN");
+            auto& osc2UniVoices = *apvts.getRawParameterValue("OSC2UNI");
+            auto& osc2UniWidth = *apvts.getRawParameterValue("OSC2WIDTH");
+            auto& osc2UniSpread = *apvts.getRawParameterValue("OSC2SPREAD");
+
+            for (int i = 0; i < getTotalNumOutputChannels(); i++)
+            {
+                 osc2[i].updateOscParams(osc2Morph, osc2Trans, osc2Gain, osc2Pan,
+                    osc2UniVoices, osc2UniWidth, osc2UniSpread);
+            }
+
             // ADSR 1
             auto& adsr1 = voice->getAdsr1();
             auto& attack1 = *apvts.getRawParameterValue("ATT1");
@@ -306,22 +352,9 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& sidesGain = *apvts.getRawParameterValue("SIDESGAIN");
             MSCompressor.updateMSCompParams(midsGain, sidesGain);
         }
-    }
-    
+    }    
     // Master Bus routing
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-
-    //juce::dsp::AudioBlock<float> audioBlock{ buffer };
-
-    // Fuzz
-
-    // HPF
-     
-    // MSCompressor.renderNextBlock(audioBlock);
-
-    // EQ
-
-    // Gain Knob
 }
 
 void BeastySynth1AudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
@@ -330,11 +363,15 @@ void BeastySynth1AudioProcessor::parameterChanged(const juce::String& parameterI
     {
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
         {
-            // Osc 1
-            if (parameterID == "OSC1WAVETYPE" || "OSC1TRANS" || "OSC1GAIN" || "OSCSUBGAIN" || 
-                "OSC1FMDEPTH" || "OSC1FMFREQ" || "OSC1FMSYNC")
+            // Osc 2
+            if (parameterID == "OSC2WAVETABLE")
             {
-
+                auto& osc2 = voice->getOscillator2();
+                auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETABLE");
+                for (int i = 0; i < getTotalNumOutputChannels(); i++)
+                {
+                    osc2[i].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
+                }
             }
 
             // ADSR 1
@@ -355,7 +392,7 @@ void BeastySynth1AudioProcessor::parameterChanged(const juce::String& parameterI
 
             }
 
-            // ADSR 2
+            // Convolution Distortion
             if (parameterID == "IRLOAD1" || "CDWET1" || "CDGAIN1")
             {
                 // Convolution Distortion
@@ -392,15 +429,18 @@ juce::AudioProcessorEditor* BeastySynth1AudioProcessor::createEditor()
 //==============================================================================
 void BeastySynth1AudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    const auto state = apvts.copyState();
+    const auto xml = state.createXml();
+    copyXmlToBinary(*xml, destData);
 }
 
 void BeastySynth1AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    const auto xmlState = getXmlFromBinary(data, sizeInBytes);
+    if (xmlState == nullptr)
+        return;
+    const auto newTree = juce::ValueTree::fromXml(*xmlState);
+    apvts.replaceState(newTree);
 }
 
 //==============================================================================
@@ -417,12 +457,22 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
     // Osc 1 controlls Wavetype, trans, Gain
     params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC1WAVETYPE", "Osc 1 Wave Type", juce::StringArray{ "Sin", "Saw", "Squ" }, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1MACRO", "Osc 1 Macro", juce::NormalisableRange<float> {0.0f, 100.0f, 0.1f}, 0.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1TRANS", "Osc 1 Transposition", juce::NormalisableRange<float> {-24.0f, 24.0f, 1.0f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC1TRANS", "Osc 1 Transposition", -24, 24, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1GAIN", "Osc 1 Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.8f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1PAN", "Osc 1 Pan", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
     params.push_back(std::make_unique<juce::AudioParameterInt>("OSC1UNI", "Osc 1 Unison Voices", 0, 12, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1WIDTH", "Osc 1 Unison Width", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1SPREAD", "Osc 1 Unison Spread", juce::NormalisableRange<float> {-2.0f, 2.0f, 0.01f}, 0.0f));
+
+    // Osc 2 Wavetable 
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2WAVETABLE", "Osc 2 Wave Table", getWaveTableFiles(), 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2MORPH", "Osc 2 Macro", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2TRANS", "Osc 2 Transposition", -24, 24, 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2GAIN", "Osc 2 Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.8f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2PAN", "Osc 2 Pan", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2UNI", "Osc 2 Unison Voices", 0, 12, 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2WIDTH", "Osc 2 Unison Width", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2SPREAD", "Osc 2 Unison Spread", juce::NormalisableRange<float> {-2.0f, 2.0f, 0.01f}, 0.0f));
      
     // ADSR 1
     params.push_back(std::make_unique<juce::AudioParameterFloat>("ATT1", "Attack1", juce::NormalisableRange<float> {0.0f, 2.0f, 0.01f}, 0.1f));
@@ -502,4 +552,33 @@ juce::StringArray BeastySynth1AudioProcessor::getIRDistFiles()
 
     return irFiles;
 }
+
+juce::StringArray BeastySynth1AudioProcessor::getWaveTableFiles()
+{
+    juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
+    juce::File resourcesFolder = projectDir.getChildFile("Source")
+        .getChildFile("Resources").getChildFile("WaveTables");
+
+    juce::StringArray waveTableFiles;
+
+    juce::Logger::writeToLog("Checking directory: " + resourcesFolder.getFullPathName());
+
+    if (resourcesFolder.isDirectory())
+    {
+        juce::Array<juce::File> files;
+        resourcesFolder.findChildFiles(files, juce::File::findFiles, false, "*.wav");
+
+        for (const auto& file : files)
+        {
+            waveTableFiles.add(file.getFullPathName());
+        }
+    }
+    else
+    {
+        juce::Logger::writeToLog("WaveTable folder not found.");
+    }
+
+    return waveTableFiles;
+}
+
 

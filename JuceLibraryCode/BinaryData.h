@@ -44,8 +44,20 @@ namespace BinaryData
     extern const char*   LT_TV_Mix_wav;
     const int            LT_TV_Mix_wavSize = 4170;
 
+    extern const char*   FIRST_WAV;
+    const int            FIRST_WAVSize = 32812;
+
+    extern const char*   PRECIPIC_WAV;
+    const int            PRECIPIC_WAVSize = 32812;
+
+    extern const char*   TEN_ADDI_WAV;
+    const int            TEN_ADDI_WAVSize = 32812;
+
+    extern const char*   TRANSFOR_WAV;
+    const int            TRANSFOR_WAVSize = 32812;
+
     // Number of elements in the namedResourceList and originalFileNames arrays.
-    const int namedResourceListSize = 12;
+    const int namedResourceListSize = 16;
 
     // Points to the start of a list of resource names.
     extern const char* namedResourceList[];

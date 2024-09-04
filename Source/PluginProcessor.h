@@ -9,6 +9,8 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PresetManager.h"
+
 #include "SynthVoice.h"
 #include "SynthSound.h"
 #include "Data\MSCompressorData.h"
@@ -53,17 +55,27 @@ public:
     void changeProgramName (int index, const juce::String& newName) override;
 
     //==============================================================================
+
+    // Preset Managment
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    Service::PresetManager& getPresetManager() { return presetManager; }
 
-    juce::StringArray getIRDistFiles();
+    // Global settings
     juce::AudioProcessorValueTreeState apvts;
     juce::dsp::ProcessSpec spec;
 
+    juce::StringArray getIRDistFiles();
+    juce::StringArray getWaveTableFiles();
+
+
 private:
+    Service::PresetManager presetManager;
     juce::Synthesiser synth;
-    juce::AudioProcessorValueTreeState::ParameterLayout createParams();
+    
     void parameterChanged(const juce::String& parameterID, float newValue);
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParams();
 
     MSCompressorData MSCompressor;
 

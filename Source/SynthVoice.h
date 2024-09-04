@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "Data/OscData.h"
+#include "Data/WTOscData.h"
 #include "Data/OscSubData.h"
 #include "Data/ADSR1Data.h"
 #include "Data/FilterData.h"
@@ -33,7 +34,9 @@ public:
     void reset();
 
     std::array<OscData, 2>& getOscillator1() { return osc1; }
+    std::array<WTOscData, 2>& getOscillator2() { return osc2; }
     std::array<OscSubData, 2>& getSubOscillator() { return oscSub; }
+
     
     ADSR1Data& getAdsr1() { return adsr1; }
     ADSR1Data& getAdsr2() { return adsr2; }
@@ -60,15 +63,18 @@ private:
 
     // Audio Busses
     juce::AudioBuffer<float> osc1Buffer;
+    juce::AudioBuffer<float> osc2Buffer;
     juce::AudioBuffer<float> oscSubBuffer;
 
     // Oscilators
-    static constexpr int numChannelsToProcess{ 2 };
-    std::array<OscData, numChannelsToProcess> osc1;
-    std::array<OscSubData, numChannelsToProcess> oscSub;
+    static constexpr int numVoicesToProcess{ 2 };
+    std::array<OscData, numVoicesToProcess> osc1;
+    std::array<WTOscData, numVoicesToProcess> osc2;
+    std::array<OscSubData, numVoicesToProcess> oscSub;
 
     // Gain
-    juce::dsp::Gain<float> oscOneGain;
+    juce::dsp::Gain<float> osc1Gain;
+    juce::dsp::Gain<float> osc2Gain;
     juce::dsp::Gain<float> oscSubGain;
 
     // Filter 1
@@ -88,7 +94,6 @@ private:
     // Delay 1
 
     // Reverb 1
-
 
 };
 

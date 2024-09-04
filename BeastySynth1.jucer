@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="Fo1ut9" name="BeastySynth1" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="Fo1ut9" name="BassBot" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              pluginManufacturer="SoundMonkeys">
-  <MAINGROUP id="lNRTCf" name="BeastySynth1">
+              pluginManufacturer="SoundMonkeys" companyName="Audio Bots" pluginVST3Category="Instrument,Stereo,Synth">
+  <MAINGROUP id="lNRTCf" name="BassBot">
     <GROUP id="{613AEEB8-A650-72D9-3562-05776277BAFC}" name="Source">
-      <GROUP id="{67E6D658-0EB0-B073-0B73-6856B67FEFAA}" name="Resources">
-        <GROUP id="{991E654D-D7A0-5B8B-65C0-DF7697FC79C4}" name="IRDistortion">
-          <FILE id="R5wa3W" name="Brohymn Mesa 4x12 SM57 V30 1.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 1.wav"/>
-          <FILE id="yKlVnz" name="Brohymn Mesa 4x12 SM57 V30 2.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 2.wav"/>
-          <FILE id="yiWqxX" name="Brohymn Mesa 4x12 SM57 V30 3.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 3.wav"/>
-          <FILE id="DaNv20" name="Brohymn-Mesa-4x12-SM57-V30-4.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-4.wav"/>
-          <FILE id="QYzAIn" name="Brohymn-Mesa-4x12-SM57-V30-5.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-5.wav"/>
-          <FILE id="mxYTNg" name="Brohymn-Mesa-4x12-SM57-V30-6.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-6.wav"/>
-          <FILE id="bfUp0C" name="ExcaliburBright1.wav" compile="0" resource="1"
-                file="Source/Resources/IRDistortion/ExcaliburBright1.wav"/>
-          <FILE id="eHl0JR" name="ExcaliburDark1.wav" compile="0" resource="1"
-                file="Source/Resources/IRDistortion/ExcaliburDark1.wav"/>
-          <FILE id="XQxwxC" name="ExcaliburNeutral.wav" compile="0" resource="1"
-                file="Source/Resources/IRDistortion/ExcaliburNeutral.wav"/>
-          <FILE id="on2cch" name="LT Brit 412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT Brit 412.wav"/>
-          <FILE id="nOxUva" name="LT MARV412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT MARV412.wav"/>
-          <FILE id="svuWam" name="LT TV Mix.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT TV Mix.wav"/>
-        </GROUP>
-      </GROUP>
+      <FILE id="svVLWZ" name="PresetComponent.h" compile="0" resource="0"
+            file="Source/PresetComponent.h"/>
+      <FILE id="YnOSRZ" name="PresetManager.cpp" compile="1" resource="0"
+            file="Source/PresetManager.cpp"/>
+      <FILE id="SUe9y8" name="PresetManager.h" compile="0" resource="0" file="Source/PresetManager.h"/>
       <FILE id="X06fzi" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="VML223" name="PluginProcessor.h" compile="0" resource="0"
@@ -65,6 +45,8 @@
               file="Source/Data/WaveShaperData.cpp"/>
         <FILE id="ObPKgE" name="WaveShaperData.h" compile="0" resource="0"
               file="Source/Data/WaveShaperData.h"/>
+        <FILE id="iFSGWw" name="WTOscData.cpp" compile="1" resource="0" file="Source/Data/WTOscData.cpp"/>
+        <FILE id="xpydHp" name="WTOscData.h" compile="0" resource="0" file="Source/Data/WTOscData.h"/>
       </GROUP>
       <GROUP id="{8F4D995E-A636-4B4F-A3FF-6465555570B5}" name="UI">
         <FILE id="UY7OaZ" name="ADSR1Component.cpp" compile="1" resource="0"
@@ -102,6 +84,41 @@
               file="Source/UI/WaveShaperComponent.cpp"/>
         <FILE id="yGBMGl" name="WaveShaperComponent.h" compile="0" resource="0"
               file="Source/UI/WaveShaperComponent.h"/>
+        <FILE id="YgN0at" name="WTOscComponent.cpp" compile="1" resource="0"
+              file="Source/UI/WTOscComponent.cpp"/>
+        <FILE id="lCwLXT" name="WTOscComponent.h" compile="0" resource="0"
+              file="Source/UI/WTOscComponent.h"/>
+      </GROUP>
+      <GROUP id="{67E6D658-0EB0-B073-0B73-6856B67FEFAA}" name="Resources">
+        <GROUP id="{991E654D-D7A0-5B8B-65C0-DF7697FC79C4}" name="IRDistortion">
+          <FILE id="R5wa3W" name="Brohymn Mesa 4x12 SM57 V30 1.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 1.wav"/>
+          <FILE id="yKlVnz" name="Brohymn Mesa 4x12 SM57 V30 2.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 2.wav"/>
+          <FILE id="yiWqxX" name="Brohymn Mesa 4x12 SM57 V30 3.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 3.wav"/>
+          <FILE id="DaNv20" name="Brohymn-Mesa-4x12-SM57-V30-4.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-4.wav"/>
+          <FILE id="QYzAIn" name="Brohymn-Mesa-4x12-SM57-V30-5.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-5.wav"/>
+          <FILE id="mxYTNg" name="Brohymn-Mesa-4x12-SM57-V30-6.wav" compile="0"
+                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-6.wav"/>
+          <FILE id="bfUp0C" name="ExcaliburBright1.wav" compile="0" resource="1"
+                file="Source/Resources/IRDistortion/ExcaliburBright1.wav"/>
+          <FILE id="eHl0JR" name="ExcaliburDark1.wav" compile="0" resource="1"
+                file="Source/Resources/IRDistortion/ExcaliburDark1.wav"/>
+          <FILE id="XQxwxC" name="ExcaliburNeutral.wav" compile="0" resource="1"
+                file="Source/Resources/IRDistortion/ExcaliburNeutral.wav"/>
+          <FILE id="on2cch" name="LT Brit 412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT Brit 412.wav"/>
+          <FILE id="nOxUva" name="LT MARV412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT MARV412.wav"/>
+          <FILE id="svuWam" name="LT TV Mix.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT TV Mix.wav"/>
+        </GROUP>
+        <GROUP id="{5D12AD0F-B83B-9268-D8A4-06B447CECFD2}" name="WaveTables">
+          <FILE id="pXVaqr" name="FIRST.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/FIRST.WAV"/>
+          <FILE id="xLitCb" name="PRECIPIC.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/PRECIPIC.WAV"/>
+          <FILE id="uJ9FLB" name="TEN_ADDI.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/TEN_ADDI.WAV"/>
+          <FILE id="lKJiQg" name="TRANSFOR.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/TRANSFOR.WAV"/>
+        </GROUP>
       </GROUP>
     </GROUP>
   </MAINGROUP>

@@ -11,8 +11,9 @@
 
 //==============================================================================
 BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1AudioProcessor& p)
-    : AudioProcessorEditor(&p), audioProcessor(p),
+    : AudioProcessorEditor(&p), audioProcessor(p), presetPanel(p.getPresetManager()),
     osc1(audioProcessor.apvts, "OSC1WAVETYPE", "OSC1MACRO", "OSC1TRANS", "OSC1GAIN", "OSC1PAN", "OSC1UNI", "OSC1WIDTH", "OSC1SPREAD"),
+    osc2(audioProcessor, audioProcessor.apvts, "OSC2WAVETABLE", "OSC2MORPH", "OSC2TRANS", "OSC2GAIN", "OSC2PAN", "OSC2UNI", "OSC2WIDTH", "OSC2SPREAD"),
     adsr1(audioProcessor.apvts, "ATT1", "DEC1", "SUS1", "REL1"),
     filter1(audioProcessor.apvts, "FILTERTYPE1", "DBOCT1", "FDRIVE1", "CUTOFF1", "RES1", "FENV1"),
     convDist1(audioProcessor, audioProcessor.apvts, "IRLOAD1", "CDWET1", "CDGAIN1"),
@@ -22,16 +23,20 @@ BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1
     waveShaper1(audioProcessor.apvts, "WSINPUT1", "WSOUTPUT1", "WSTYPE1"),
     MSCompressor(audioProcessor.apvts, "MIDSGAIN", "SIDESGAIN")
 {
-    setSize (2000, 400);
 
-    addAndMakeVisible(osc1);
-    addAndMakeVisible(adsr1);
-    addAndMakeVisible(filter1);
-    addAndMakeVisible(convDist1);
-    addAndMakeVisible(adsr2);
-    addAndMakeVisible(oscSub);
-    addAndMakeVisible(waveShaper1);
-    addAndMakeVisible(reverb1);
+    setSize (2000, 590);
+
+    addAndMakeVisible(&presetPanel);
+
+    addAndMakeVisible(&osc1);
+    addAndMakeVisible(&osc2);
+    addAndMakeVisible(&adsr1);
+    addAndMakeVisible(&filter1);
+    addAndMakeVisible(&convDist1);
+    addAndMakeVisible(&adsr2);
+    addAndMakeVisible(&oscSub);
+    addAndMakeVisible(&waveShaper1);
+    addAndMakeVisible(&reverb1);
 
     //addAndMakeVisible(MSCompressor);
 
@@ -44,28 +49,36 @@ BeastySynth1AudioProcessorEditor::~BeastySynth1AudioProcessorEditor()
 //==============================================================================
 void BeastySynth1AudioProcessorEditor::paint (juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll(juce::Colours::darkgrey);
     g.setFont (juce::FontOptions (10.0f));
 }
 
 void BeastySynth1AudioProcessorEditor::resized()
 {
+    // Preset manager
+    presetPanel.setBounds(0, 0, getWidth() / 2, 40);
+
     // Draw Elements
-    // Top Row
-    osc1.setBounds(0, 0, 600, 150);
-    filter1.setBounds(osc1.getRight(), 0, 350, 150);
-    convDist1.setBounds(filter1.getRight(), 0, 250, 150);
-    reverb1.setBounds(convDist1.getRight(), 0, 400, 150);
+    // First Row
+    int yFirst = 41;
+    osc1.setBounds(0, yFirst, 600, 150);
+    filter1.setBounds(osc1.getRight(), yFirst, 350, 150);
+    convDist1.setBounds(filter1.getRight(), yFirst, 250, 150);
+    reverb1.setBounds(convDist1.getRight(), yFirst, 400, 150);
+    
+    // Second Row
+    int ySecond = osc1.getBottom();
+    osc2.setBounds(0, ySecond, 600, 150);
 
-
-    // Middle Row 
-    adsr1.setBounds(0, osc1.getBottom(), 250, 100);
-    adsr2.setBounds(adsr1.getRight(), filter1.getBottom(), 250, 100);
+    // Third Row 
+    int yThird = osc2.getBottom();
+    adsr1.setBounds(0, yThird, 250, 100);
+    adsr2.setBounds(adsr1.getRight(), yThird, 250, 100);
 
     // Bottom Row
-    oscSub.setBounds(0, adsr1.getBottom(), 250, 150);
-    waveShaper1.setBounds(oscSub.getRight(), adsr2.getBottom(), 250, 150);
+    int yBot = adsr1.getBottom();
+    oscSub.setBounds(0, yBot, 250, 150);
+    waveShaper1.setBounds(oscSub.getRight(), yBot, 250, 150);
 
 
     MSCompressor.setBounds(1000, 0, 200, 150);

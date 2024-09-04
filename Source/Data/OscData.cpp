@@ -19,8 +19,7 @@ void OscData::prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRate, int 
     spec.numChannels = outputChannels;
 
     prepare(spec);
-    //setFrequency(220.f);
-    fmOsc.prepare(spec);
+    //fmOsc.prepare(spec);
     oscGain.prepare(spec);
     oscGain.setGainLinear(0.8f);
     oscPan.prepare(spec);
@@ -40,20 +39,21 @@ float OscData::processNextSample(float input)  // depricated
     return oscGain.processSample(processSample(input));
 }
 
-void OscData::renderNextBlock(juce::AudioBuffer<float>& buffer, int startSample, int numSamples)
+void OscData::renderNextBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples)
 {
     juce::dsp::AudioBlock<float> audioBlock{ buffer };
 
     jassert(audioBlock.getNumSamples() > 0);
-    process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+    juce::dsp::ProcessContextReplacing<float> context(audioBlock);
+
+    process(context);
 
     for (int i = 0; i < uniVoicesParam; i++)
     {
         uniOscs[i].renderNextBuffer(buffer, startSample, numSamples);
     }
-
-    oscGain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
-    oscPan.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
+    oscGain.process(context);
+    oscPan.process(context);
 }
 
 void OscData::updateOscParams(const int& oscWaveChoice, const float& osc1Macro, const int& transposition, 
@@ -144,16 +144,12 @@ void OscData::setWaveType(const int choice)
     {
         uniOscs[i].initialise(currentWaveType);
     }
-    // WaveTypes
-    // return std::sin (x)                          //Sin
-    // return x / juce::MathConstants<float>::pi    //Saw
-    // return x <0.0f ? -1.0f : 1.0f;               //Squ
 }
 
 void OscData::resetAll()
 {
     reset();
-    fmOsc.reset();
+    //fmOsc.reset();
     oscGain.reset();
 }
 
