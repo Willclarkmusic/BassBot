@@ -17,7 +17,7 @@ class OscSubData : public juce::dsp::Oscillator<float>
 public:
     void prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRate, int samplesPerBlock, int outputChannels);
     float processNextSample(float input);
-    void renderNextBlock(juce::dsp::AudioBlock<float>& audioBlock);
+    void renderNextBuffer(juce::AudioBuffer<float>& audioBuffer);
     void setWaveType(const int choice);
     void updateOscParams(const int midiNoteNumber, const float osc1Macro, const int oscTrans, const float gain);
     void setOscGain(const float gain);

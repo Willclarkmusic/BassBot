@@ -25,16 +25,16 @@ void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::Synthesiser
         oscSub[v].setWaveFrequency(midiNoteNumber - 12);
     }
     
-    adsr1.noteOn();
-    adsr2.noteOn();
+    ahdsr1.noteOn();
+    ahdsr2.noteOn();
 }
 
 void SynthVoice::stopNote(float velocity, bool allowTailOff)
 {
-    adsr1.noteOff();
-    adsr2.noteOff();
+    ahdsr1.noteOff();
+    ahdsr2.noteOff();
 
-    if (!allowTailOff || !adsr1.isActive())
+    if (!allowTailOff || !ahdsr1.isActive())
         clearCurrentNote();
 }
 
@@ -52,8 +52,8 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
 {
     reset();
 
-    adsr1.setSampleRate(sampleRate);
-    adsr2.setSampleRate(sampleRate);
+    ahdsr1.setSampleRate(sampleRate);
+    ahdsr2.setSampleRate(sampleRate);
 
     spec.maximumBlockSize = samplesPerBlock;
     spec.sampleRate = sampleRate;
@@ -63,20 +63,12 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock, int outpu
     {
         osc1[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
         osc2[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
-        oscSub[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);
-        
+        oscSub[v].prepareToPlay(spec, sampleRate, samplesPerBlock, outputChannels);       
     }
 
-    osc1Gain.prepare(spec);
-    osc1Gain.setGainLinear(0.6f);
-
-    osc2Gain.prepare(spec);
-    osc2Gain.setGainLinear(0.6f);
-
-    oscSubGain.prepare(spec);
-    oscSubGain.setGainLinear(0.6f);
-
     filter1.prepareToPlay(sampleRate, samplesPerBlock, outputChannels);
+
+    filter2.prepareToPlay(sampleRate, samplesPerBlock, outputChannels);
     
     convDist1.prepareToPlay(sampleRate, samplesPerBlock, outputChannels);
 
@@ -96,80 +88,95 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     //Osc1 Audio Bus
     osc1Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    osc1FXBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
 
     // mod activations
-    adsr2.applyEnvelopeToBuffer(outputBuffer, 0, osc1Buffer.getNumSamples());
+    //ahdsr2.applyEnvelopeToBuffer(outputBuffer, startSample, osc1Buffer.getNumSamples());
 
     osc1Buffer.clear();
+    osc1FXBuffer.clear();
 
-    for (int v = 0; v < numVoicesToProcess; v++) // process each oscillator voice
+    for (int v = 0; v < numVoicesToProcess; v++) // Voices
         osc1[v].renderNextBuffer(osc1Buffer, startSample, numSamples);
 
     juce::dsp::AudioBlock<float> osc1Block{ osc1Buffer };
-    osc1Gain.process(juce::dsp::ProcessContextReplacing<float>(osc1Block));
 
-    adsr1.applyEnvelopeToBuffer(osc1Buffer, 0, osc1Buffer.getNumSamples());
+    ahdsr1.applyEnvelopeToBuffer(osc1Buffer, startSample, osc1Buffer.getNumSamples());
 
     filter1.process(osc1Buffer);
-    convDist1.process(osc1Buffer);
-    reverb1.renderNextBlock(osc1Buffer);
 
+    for (int ch = 0; ch < outputBuffer.getNumChannels(); ch++)
+    {
+        osc1FXBuffer.copyFrom(ch, 0, osc1Buffer, ch, 0, numSamples);
+    }
+
+    convDist1.process(osc1FXBuffer);
+    reverb1.renderNextBlock(osc1FXBuffer);
 
     //Osc2 Audio Bus
     osc2Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    osc2FXBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     osc2Buffer.clear();
+    osc2FXBuffer.clear();
 
-    for (int v = 0; v < numVoicesToProcess; v++) // process each oscillator voice
+    for (int v = 0; v < numVoicesToProcess; v++)
         osc2[v].renderNextBuffer(osc2Buffer, startSample, numSamples);
 
     juce::dsp::AudioBlock<float> osc2Block{ osc2Buffer };
-    osc2Gain.process(juce::dsp::ProcessContextReplacing<float>(osc2Block));
 
-    adsr1.applyEnvelopeToBuffer(osc2Buffer, 0, osc2Buffer.getNumSamples());
+    ahdsr1.applyEnvelopeToBuffer(osc2Buffer, startSample, osc2Buffer.getNumSamples());
 
+    filter2.process(osc2Buffer);
+
+    for (int ch = 0; ch < outputBuffer.getNumChannels(); ch++)
+    {
+        osc2FXBuffer.copyFrom(ch, 0, osc2Buffer, ch, 0, numSamples);
+    }
 
     //OscSub Audio Bus
     oscSubBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
     oscSubBuffer.clear();
 
-    juce::dsp::AudioBlock<float> oscSubBlock{ oscSubBuffer };
-
     for (int v = 0; v < numVoicesToProcess; v++)
-        oscSub[v].renderNextBlock(oscSubBlock);
+        oscSub[v].renderNextBuffer(oscSubBuffer);
 
-    oscSubGain.process(juce::dsp::ProcessContextReplacing<float>(oscSubBlock));
+    ahdsr1.applyEnvelopeToBuffer(oscSubBuffer, startSample, oscSubBuffer.getNumSamples());
 
-    adsr1.applyEnvelopeToBuffer(oscSubBuffer, 0, oscSubBuffer.getNumSamples());
-
-    waveShaper1.renderNextBlock(oscSubBlock);
-
+    waveShaper1.renderNextBuffer(oscSubBuffer);
 
     // Add OSC chains to output buffer
     for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++)
     {
-        outputBuffer.addFrom(channel, startSample, osc1Buffer, channel, 0, numSamples, 0.3f); // Gain on the end for mixer
-        outputBuffer.addFrom(channel, startSample, osc2Buffer, channel, 0, numSamples, 0.3f); // Gain on the end for mixer
-        outputBuffer.addFrom(channel, startSample, oscSubBuffer, channel, 0, numSamples, 0.3f);
+        outputBuffer.addFrom(channel, startSample, osc1FXBuffer, channel, 0, numSamples, 0.2f);
+        outputBuffer.addFrom(channel, startSample, osc2FXBuffer, channel, 0, numSamples, 0.4f);
+        outputBuffer.addFrom(channel, startSample, oscSubBuffer, channel, 0, numSamples, 0.2f);
 
-        if (! adsr1.isActive())
+        if (! ahdsr1.isActive())
             clearCurrentNote();
     }
-
 }
 
-void SynthVoice::updateFilter(const int filterType, const int filterDBOct, const float frequency,
+//void SynthVoice::processSubBus(juce::AudioBuffer& subBuffer)
+//{
+//
+//}
+
+void SynthVoice::updateFilter1(const int filterType, const int filterDBOct, const float frequency,
     const float resonance, const float drive, const float envAmt)
 {
-    float modEnv2 = adsr2.getNextSample();
+    float modEnv2 = ahdsr2.getNextSample();
     filter1.updateParams(filterType, filterDBOct, frequency, resonance, drive, envAmt, modEnv2);
+}
+
+void SynthVoice::updateFilter2(const int filterType, const int filterDBOct, const float frequency,
+    const float resonance, const float drive, const float envAmt)
+{
+    float modEnv2 = ahdsr2.getNextSample();
+    filter2.updateParams(filterType, filterDBOct, frequency, resonance, drive, envAmt, modEnv2);
 }
 
 void SynthVoice::reset()
 {
-    osc1Gain.reset();
-    osc2Gain.reset();
-    oscSubGain.reset();
-    adsr1.reset();
-    adsr2.reset();
-    //filterAdsr.reset();
+    ahdsr1.reset();
+    ahdsr2.reset();
 }

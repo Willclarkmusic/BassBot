@@ -2,23 +2,17 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="BeastySynth1\Source\Data">
-      <UniqueIdentifier>{F0FE2E0F-7D10-ED76-9C70-C6DBAB621061}</UniqueIdentifier>
+    <Filter Include="Bass Bot\Source\Data">
+      <UniqueIdentifier>{150C2B07-BDF0-65E1-7CF3-682E9D3C6FCF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BeastySynth1\Source\UI">
-      <UniqueIdentifier>{1D9620C6-B251-2216-6F96-0DA70F5DF98B}</UniqueIdentifier>
+    <Filter Include="Bass Bot\Source\UI">
+      <UniqueIdentifier>{D87188FA-6690-2B44-AD28-B26F58AD9449}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BeastySynth1\Source\Resources\IRDistortion">
-      <UniqueIdentifier>{1B8A7AC0-9830-3D53-54B7-AB2B3A399FC9}</UniqueIdentifier>
+    <Filter Include="Bass Bot\Source">
+      <UniqueIdentifier>{3133A69B-EB25-523B-7BD1-28734C2F569D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BeastySynth1\Source\Resources">
-      <UniqueIdentifier>{1DF32047-0103-426A-D630-AC403BD51A02}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BeastySynth1\Source">
-      <UniqueIdentifier>{BFFAA8BD-86E1-8BD1-CE04-ABB2AAC8D3AA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BeastySynth1">
-      <UniqueIdentifier>{82AAA4BA-D4DB-3318-08E9-5DD75AE3A9DA}</UniqueIdentifier>
+    <Filter Include="Bass Bot">
+      <UniqueIdentifier>{DBFF9413-FA08-3611-61A8-6A70E2044A5A}</UniqueIdentifier>
     </Filter>
     <Filter Include="JUCE Modules\juce_audio_basics\audio_play_head">
       <UniqueIdentifier>{EB58F05A-A968-CEBE-40C4-107CDD8F240F}</UniqueIdentifier>
@@ -716,70 +710,82 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\PresetManager.cpp">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginProcessor.cpp">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\PluginEditor.cpp">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\SynthVoice.cpp">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\ADSR1Data.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Data\AHDSRData.cpp">
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\ConvDistortionData.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\FilterData.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\MSCompressorData.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\OscData.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\OscSubData.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\Reverb1Data.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\UnisonOsc.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Data\WaveShaperData.cpp">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Data\WTOscData.cpp">
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\ADSR1Component.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\AHDSRComponent.cpp">
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\ConvDistortionComponent.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\CustomComponents.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\FilterComponent.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\MSCompressorComponent.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\OscComponent.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\OscSubComponent.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\Reverb1Component.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\WaveShaperComponent.cpp">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\WTOscComponent.cpp">
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.cpp">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>
@@ -3598,9 +3604,6 @@
     <ClCompile Include="..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>JUCE Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -3655,76 +3658,88 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\PresetComponent.h">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PresetManager.h">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginProcessor.h">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\PluginEditor.h">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SynthVoice.h">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\SynthSound.h">
-      <Filter>BeastySynth1\Source</Filter>
+      <Filter>Bass Bot\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\ADSR1Data.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Data\AHDSRData.h">
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\ConvDistortionData.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\FilterData.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\MSCompressorData.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\OscData.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\OscSubData.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\Reverb1Data.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\UnisonOsc.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Data\WaveShaperData.h">
-      <Filter>BeastySynth1\Source\Data</Filter>
+      <Filter>Bass Bot\Source\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Data\WTOscData.h">
+      <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\ADSR1Component.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\AHDSRComponent.h">
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\ConvDistortionComponent.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\CustomComponents.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\FilterComponent.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\MSCompressorComponent.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\OscComponent.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\OscSubComponent.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\Reverb1Component.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\WaveShaperComponent.h">
-      <Filter>BeastySynth1\Source\UI</Filter>
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\WTOscComponent.h">
+      <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">
       <Filter>JUCE Modules\juce_audio_basics\audio_play_head</Filter>
@@ -7641,9 +7656,6 @@
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>JUCE Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -7652,42 +7664,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn Mesa 4x12 SM57 V30 1.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn Mesa 4x12 SM57 V30 2.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn Mesa 4x12 SM57 V30 3.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn-Mesa-4x12-SM57-V30-4.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn-Mesa-4x12-SM57-V30-5.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn-Mesa-4x12-SM57-V30-6.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\ExcaliburBright1.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\ExcaliburDark1.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\ExcaliburNeutral.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\LT Brit 412.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\LT MARV412.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\LT TV Mix.wav">
-      <Filter>BeastySynth1\Source\Resources\IRDistortion</Filter>
-    </None>
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\src\common\README.md">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe\src\common</Filter>
     </None>

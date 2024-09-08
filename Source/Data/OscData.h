@@ -31,10 +31,11 @@ public:
 
 private:
     //juce::dsp::Oscillator<float> fmOsc{ [](float x) { return std::sin(x); } };
-    std::function< NumericType(NumericType)> currentWaveType = [](float x) { return std::sin(x); };
+
+    std::function<NumericType(NumericType)> currentWaveType = [](float x) { return std::sin(x); };
 
     // Unison Voices
-    static constexpr int maxUnisonVoices{ 12 };
+    static constexpr int maxUnisonVoices{ 8 };
     std::array<UnisonOsc, maxUnisonVoices> uniOscs;
     int uniVoicesParam = 0;
 
@@ -45,6 +46,5 @@ private:
     
     int lastMidiNoteNum;
     int trans{ 0 };
-
 };
 

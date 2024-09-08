@@ -8,15 +8,6 @@
     <Filter Include="BassBot\Source\UI">
       <UniqueIdentifier>{C7E010F7-A7AF-9741-BADE-EBFAEE435FCC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="BassBot\Source\Resources\IRDistortion">
-      <UniqueIdentifier>{D6ECD71C-A6F1-AEFF-F305-52D12E6E80EB}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BassBot\Source\Resources\WaveTables">
-      <UniqueIdentifier>{E35CC892-B606-5844-FFA2-C76B7006B934}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BassBot\Source\Resources">
-      <UniqueIdentifier>{E0896F6D-1BC2-578C-A202-39A8AFCAD01F}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BassBot\Source">
       <UniqueIdentifier>{44CC46DD-D7E0-B6CB-7909-BE2378F04F22}</UniqueIdentifier>
     </Filter>
@@ -733,6 +724,9 @@
     <ClCompile Include="..\..\Source\Data\ADSR1Data.cpp">
       <Filter>BassBot\Source\Data</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Data\AHDSRData.cpp">
+      <Filter>BassBot\Source\Data</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Data\ConvDistortionData.cpp">
       <Filter>BassBot\Source\Data</Filter>
     </ClCompile>
@@ -761,6 +755,9 @@
       <Filter>BassBot\Source\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\ADSR1Component.cpp">
+      <Filter>BassBot\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\AHDSRComponent.cpp">
       <Filter>BassBot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\ConvDistortionComponent.cpp">
@@ -3607,9 +3604,6 @@
     <ClCompile Include="..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
-      <Filter>JUCE Library Code</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -3684,6 +3678,9 @@
     <ClInclude Include="..\..\Source\Data\ADSR1Data.h">
       <Filter>BassBot\Source\Data</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Data\AHDSRData.h">
+      <Filter>BassBot\Source\Data</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Data\ConvDistortionData.h">
       <Filter>BassBot\Source\Data</Filter>
     </ClInclude>
@@ -3712,6 +3709,9 @@
       <Filter>BassBot\Source\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\ADSR1Component.h">
+      <Filter>BassBot\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\AHDSRComponent.h">
       <Filter>BassBot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\ConvDistortionComponent.h">
@@ -7656,9 +7656,6 @@
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
-      <Filter>JUCE Library Code</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -7667,54 +7664,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn Mesa 4x12 SM57 V30 1.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn Mesa 4x12 SM57 V30 2.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn Mesa 4x12 SM57 V30 3.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn-Mesa-4x12-SM57-V30-4.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn-Mesa-4x12-SM57-V30-5.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\Brohymn-Mesa-4x12-SM57-V30-6.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\ExcaliburBright1.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\ExcaliburDark1.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\ExcaliburNeutral.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\LT Brit 412.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\LT MARV412.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\IRDistortion\LT TV Mix.wav">
-      <Filter>BassBot\Source\Resources\IRDistortion</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\WaveTables\FIRST.WAV">
-      <Filter>BassBot\Source\Resources\WaveTables</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\WaveTables\PRECIPIC.WAV">
-      <Filter>BassBot\Source\Resources\WaveTables</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\WaveTables\TEN_ADDI.WAV">
-      <Filter>BassBot\Source\Resources\WaveTables</Filter>
-    </None>
-    <None Include="..\..\Source\Resources\WaveTables\TRANSFOR.WAV">
-      <Filter>BassBot\Source\Resources\WaveTables</Filter>
-    </None>
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\src\common\README.md">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe\src\common</Filter>
     </None>

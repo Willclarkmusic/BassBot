@@ -16,7 +16,7 @@ class WaveShaperData
 {
 public:
     void prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRate, int samplesPerBlock, int outputChannels);
-    void renderNextBlock(juce::dsp::AudioBlock<float>& audioBlock);
+    void renderNextBuffer(juce::AudioBuffer<float>& buffer);
     void updateParams(const float input, const float output, const int type);
 
     void resetAll();

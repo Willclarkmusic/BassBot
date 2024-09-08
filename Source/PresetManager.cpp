@@ -15,7 +15,8 @@ namespace Service
     const juce::File PresetManager::defaultDirectory{ juce::File::getSpecialLocation(
         juce::File::SpecialLocationType::userDocumentsDirectory)
         .getChildFile(ProjectInfo::companyName)
-        .getChildFile(ProjectInfo::projectName) };  // PresetDirectory
+        .getChildFile(ProjectInfo::projectName)
+        .getChildFile("Presets")};  // PresetDirectory
 
     const juce::String PresetManager::extension{ "bb" };    
 

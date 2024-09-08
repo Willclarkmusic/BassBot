@@ -16,7 +16,7 @@ OscSubComponent::OscSubComponent(juce::AudioProcessorValueTreeState& apvts, juce
     juce::String macroID, juce::String transID, juce::String gainID)
 {
     // Wave select
-    juce::StringArray choices{ "Sin", "Saw", "Squ" };
+    juce::StringArray choices{ "Sin", "Squ" };
     oscWaveSelector.addItemList(choices, 1);
     addAndMakeVisible(oscWaveSelector);
     oscWaveSelectorAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>

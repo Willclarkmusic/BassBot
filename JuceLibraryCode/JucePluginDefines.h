@@ -20,7 +20,7 @@
  #define JucePlugin_Build_AU               1
 #endif
 #ifndef  JucePlugin_Build_AUv3
- #define JucePlugin_Build_AUv3             0
+ #define JucePlugin_Build_AUv3             1
 #endif
 #ifndef  JucePlugin_Build_AAX
  #define JucePlugin_Build_AAX              0
@@ -29,7 +29,7 @@
  #define JucePlugin_Build_Standalone       1
 #endif
 #ifndef  JucePlugin_Build_Unity
- #define JucePlugin_Build_Unity            0
+ #define JucePlugin_Build_Unity            1
 #endif
 #ifndef  JucePlugin_Build_LV2
  #define JucePlugin_Build_LV2              0
@@ -41,13 +41,13 @@
  #define JucePlugin_Enable_ARA             0
 #endif
 #ifndef  JucePlugin_Name
- #define JucePlugin_Name                   "BassBot"
+ #define JucePlugin_Name                   "Bass Bot"
 #endif
 #ifndef  JucePlugin_Desc
- #define JucePlugin_Desc                   "BassBot"
+ #define JucePlugin_Desc                   "Bass Bot"
 #endif
 #ifndef  JucePlugin_Manufacturer
- #define JucePlugin_Manufacturer           "SoundMonkeys"
+ #define JucePlugin_Manufacturer           "Audio Bots"
 #endif
 #ifndef  JucePlugin_ManufacturerWebsite
  #define JucePlugin_ManufacturerWebsite    "www.AudioBots.com"
@@ -137,7 +137,7 @@
  #define JucePlugin_IAASubType             JucePlugin_PluginCode
 #endif
 #ifndef  JucePlugin_IAAName
- #define JucePlugin_IAAName                "SoundMonkeys: BassBot"
+ #define JucePlugin_IAAName                "Audio Bots: Bass Bot"
 #endif
 #ifndef  JucePlugin_VSTNumMidiInputs
  #define JucePlugin_VSTNumMidiInputs       16

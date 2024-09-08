@@ -18,9 +18,9 @@ void UnisonOsc::prepareToPlay(juce::dsp::ProcessSpec& spec, const int index)
 
     uniOscGain.prepare(spec);
     uniOscPan.prepare(spec);
-
     uniOscGain.setGainLinear(0.8f);
     uniOscPan.setPan(0.0f);
+
     resetAllUni();
 }
 
@@ -32,8 +32,8 @@ void UnisonOsc::renderNextBuffer(juce::AudioBuffer<float> &buffer, int startSamp
     juce::dsp::AudioBlock<float> uniBlock{ uniBuffer };
 
     process(juce::dsp::ProcessContextReplacing<float>(uniBlock));
-    uniOscGain.process(juce::dsp::ProcessContextReplacing<float>(uniBlock));
     uniOscPan.process(juce::dsp::ProcessContextReplacing<float>(uniBlock));
+    uniOscGain.process(juce::dsp::ProcessContextReplacing<float>(uniBlock));
 
     for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
     {
@@ -70,7 +70,6 @@ void UnisonOsc::setUniWidth(const int& index, const float& pan, const float& uni
         uniOscPan.setPan(leftPan);
     }
 }
-
 
 void UnisonOsc::resetAllUni()
 {

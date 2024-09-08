@@ -12,7 +12,7 @@
 #include "PresetComponent.h"
 #include "PluginProcessor.h"
 
-#include "UI/ADSR1Component.h"
+#include "UI/AHDSRComponent.h"
 #include "UI/OscComponent.h"
 #include "UI/WTOscComponent.h"
 #include "UI/FilterComponent.h"
@@ -48,9 +48,10 @@ private:
     Reverb1Component reverb1;
 
     WTOscComponent osc2;
+    FilterComponent filter2;
 
-    ADSR1Component adsr1;
-    ADSR1Component adsr2;
+    AHDSRComponent ahdsr1;
+    AHDSRComponent ahdsr2;
 
     OscSubComponent oscSub;
     WaveShaperComponent waveShaper1;

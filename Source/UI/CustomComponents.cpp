@@ -74,6 +74,40 @@ void AnimatedKnobMedium::paint(juce::Graphics& g)
     g.setColour(juce::Colours::ghostwhite);
     g.drawRect(getLocalBounds().reduced(5));
 }
+//==============================================================================
+
+void AnimatedKnobSmall::createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& paramID, juce::String labelString)
+{
+    setSize(knobRadius, knobRadius + (2 * labelHeight));
+
+    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 40, 15);
+    addAndMakeVisible(slider);
+
+    attachment = std::make_unique<SliderAttachment>(apvts, paramID, slider);
+
+    label.setText(labelString, juce::NotificationType::dontSendNotification);
+    label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::antiquewhite);
+    label.setJustificationType(juce::Justification::centred);
+    label.setFont(10.0f);
+    addAndMakeVisible(label);
+}
+
+void AnimatedKnobSmall::setBoundsKnobWithLabel(int xPos, int yPos)
+{
+    setBounds(xPos, yPos, knobRadius, knobRadius + (2 * labelHeight));
+    label.setBounds(0, padding, labelWidth, labelHeight);
+    slider.setBounds(0, label.getBottom(), knobRadius, knobRadius);
+}
+
+void AnimatedKnobSmall::paint(juce::Graphics& g)
+{
+    //g.fillAll(juce::Colours::darkgrey);
+    g.setColour(juce::Colours::ghostwhite);
+    g.drawRect(getLocalBounds().reduced(5));
+}
+
+//==============================================================================
 
 void ComboBoxMedium::createComboBox(juce::AudioProcessorValueTreeState& apvts, juce::String& comboBoxID, juce::StringArray& choices)
 {

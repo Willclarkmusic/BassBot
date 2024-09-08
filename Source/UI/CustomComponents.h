@@ -50,6 +50,26 @@ private:
     juce::Label label;
 };
 
+class AnimatedKnobSmall : public juce::Component
+{
+public:
+    void createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& waveSelectorID, juce::String labelString);
+    void setBoundsKnobWithLabel(int xPos, int yPos);
+    void paint(juce::Graphics& g) override;
+
+private:
+    using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+
+    int knobRadius = 50;
+    int labelHeight = 10;
+    int labelWidth = 50;
+    int padding = 5;
+
+    juce::Slider slider;
+    std::unique_ptr<SliderAttachment> attachment;
+    juce::Label label;
+};
+
 class ComboBoxMedium : public juce::Component
 {
 public:
@@ -68,3 +88,4 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> attachment;
     juce::StringArray choices;
 };
+

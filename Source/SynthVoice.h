@@ -14,11 +14,12 @@
 #include "Data/OscData.h"
 #include "Data/WTOscData.h"
 #include "Data/OscSubData.h"
-#include "Data/ADSR1Data.h"
+#include "Data/AHDSRData.h"
 #include "Data/FilterData.h"
 #include "Data/ConvDistortionData.h"
 #include "Data/WaveShaperData.h"
 #include "Data/Reverb1Data.h"
+
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -36,34 +37,38 @@ public:
     std::array<OscData, 2>& getOscillator1() { return osc1; }
     std::array<WTOscData, 2>& getOscillator2() { return osc2; }
     std::array<OscSubData, 2>& getSubOscillator() { return oscSub; }
-
     
-    ADSR1Data& getAdsr1() { return adsr1; }
-    ADSR1Data& getAdsr2() { return adsr2; }
+    AHDSRData& getAHDSR1() { return ahdsr1; }
+    AHDSRData& getAHDSR2() { return ahdsr2; }
 
     FilterData& getFilter1() { return filter1; }
+    FilterData& getFilter2() { return filter2; }
 
     ConvDistortionData& getConvDist1() { return convDist1; }
     WaveShaperData& getWaveshaper1() { return waveShaper1; }
 
     ReverbData& getReverb1() { return reverb1; }
 
-    void updateFilter(const int filterType, const int filterDBOct, const float frequency,
+    void updateFilter1(const int filterType, const int filterDBOct, const float frequency,
+        const float resonance, const float drive, const float envAmt);
+    void updateFilter2(const int filterType, const int filterDBOct, const float frequency,
         const float resonance, const float drive, const float envAmt);
 
 private:
     bool isPrepared{ false };
     juce::dsp::ProcessSpec spec;
-
+    
     // Envelopes
-    ADSR1Data adsr1;
-    ADSR1Data adsr2;
+    AHDSRData ahdsr1;
+    AHDSRData ahdsr2;
 
     // LFOs
 
     // Audio Busses
     juce::AudioBuffer<float> osc1Buffer;
+    juce::AudioBuffer<float> osc1FXBuffer;
     juce::AudioBuffer<float> osc2Buffer;
+    juce::AudioBuffer<float> osc2FXBuffer;
     juce::AudioBuffer<float> oscSubBuffer;
 
     // Oscilators
@@ -72,13 +77,11 @@ private:
     std::array<WTOscData, numVoicesToProcess> osc2;
     std::array<OscSubData, numVoicesToProcess> oscSub;
 
-    // Gain
-    juce::dsp::Gain<float> osc1Gain;
-    juce::dsp::Gain<float> osc2Gain;
-    juce::dsp::Gain<float> oscSubGain;
-
     // Filter 1
     FilterData filter1; 
+
+    // Filter 2
+    FilterData filter2; 
 
     // Convolution Distortion 1
     ConvDistortionData convDist1;
@@ -94,6 +97,5 @@ private:
     // Delay 1
 
     // Reverb 1
-
 };
 

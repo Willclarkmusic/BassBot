@@ -26,8 +26,9 @@ void WaveShaperData::prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRat
     wsTahn.prepare(spec);        
 }
 
-void WaveShaperData::renderNextBlock(juce::dsp::AudioBlock<float>& audioBlock)
+void WaveShaperData::renderNextBuffer(juce::AudioBuffer<float>& buffer)
 {
+    juce::dsp::AudioBlock<float> audioBlock{ buffer };
     inputGain.process(juce::dsp::ProcessContextReplacing<float>{audioBlock});
 
     switch (wsType)

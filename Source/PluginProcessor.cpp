@@ -34,12 +34,6 @@ BeastySynth1AudioProcessor::BeastySynth1AudioProcessor()
 
     //OSC 1
     apvts.addParameterListener("OSC1WAVETYPE", this);
-    apvts.addParameterListener("OSC1MACRO", this);
-    apvts.addParameterListener("OSC1TRANS", this);
-    apvts.addParameterListener("OSC1GAIN", this);
-    apvts.addParameterListener("OSC1PAN", this);
-    apvts.addParameterListener("OSC1UNI", this);
-    apvts.addParameterListener("OSC1WIDTH", this); 
 
     //OSC 2
     apvts.addParameterListener("OSC2WAVETABLE", this);
@@ -50,24 +44,12 @@ BeastySynth1AudioProcessor::BeastySynth1AudioProcessor()
     apvts.addParameterListener("OSC2UNI", this);
     apvts.addParameterListener("OSC2WIDTH", this); 
 
-    //ADSR 1
-    apvts.addParameterListener("ATT1", this);
-    apvts.addParameterListener("DEC1", this);
-    apvts.addParameterListener("SUS1", this);
-    apvts.addParameterListener("REL1", this);
-
-    // Filter 1
-    apvts.addParameterListener("FILTERTYPE1", this);
-    apvts.addParameterListener("DBOCT1", this);
-    apvts.addParameterListener("CUTOFF1", this);
-    apvts.addParameterListener("RES1", this);
-    apvts.addParameterListener("FDRIVE1", this);
-    apvts.addParameterListener("FENV1", this);
-
+    // Convolusion distortion
     apvts.addParameterListener("IRLOAD1", this);
     apvts.addParameterListener("CDWET1", this);
     apvts.addParameterListener("CDGAIN1", this);
 
+    // MS processor
     apvts.addParameterListener("MIDSGAIN", this);
     apvts.addParameterListener("SIDESGAIN", this);
 
@@ -77,11 +59,6 @@ BeastySynth1AudioProcessor::~BeastySynth1AudioProcessor()
 {
     //OSC 1
     apvts.removeParameterListener("OSC1WAVETYPE", this);
-    apvts.removeParameterListener("OSC1MACRO", this);
-    apvts.removeParameterListener("OSC1TRANS", this);
-    apvts.removeParameterListener("OSC1GAIN", this);
-    apvts.removeParameterListener("OSC1UNI", this);
-    apvts.removeParameterListener("OSC1WIDTH", this);
 
     //OSC 2
     apvts.removeParameterListener("OSC2WAVETABLE", this);
@@ -91,20 +68,6 @@ BeastySynth1AudioProcessor::~BeastySynth1AudioProcessor()
     apvts.removeParameterListener("OSC2PAN", this);
     apvts.removeParameterListener("OSC2UNI", this);
     apvts.removeParameterListener("OSC2WIDTH", this);
-
-    //ADSR 1
-    apvts.removeParameterListener("ATT1", this);
-    apvts.removeParameterListener("DEC1", this);
-    apvts.removeParameterListener("SUS1", this);
-    apvts.removeParameterListener("REL1", this);
-
-    // Filter 1
-    apvts.removeParameterListener("FILTERTYPE1", this);
-    apvts.removeParameterListener("DBOCT1", this);
-    apvts.removeParameterListener("CUTOFF1", this);
-    apvts.removeParameterListener("RES1", this);
-    apvts.removeParameterListener("FDRIVE1", this);
-    apvts.removeParameterListener("FENV1", this);
 
     // Conv Dist 1
     apvts.removeParameterListener("IRLOAD1", this);
@@ -187,23 +150,20 @@ void BeastySynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     spec.sampleRate = sampleRate;
     spec.numChannels = getTotalNumOutputChannels();
 
-    for (int i = 0; i < synth.getNumVoices(); i++)
+    for (int v = 0; v < synth.getNumVoices(); v++)
     {
-        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(v)))
         {
+            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
+
             auto& osc2 = voice->getOscillator2();
-            for (int i = 0; i < getTotalNumOutputChannels(); i++)
+            for (int ch = 0; ch < getTotalNumOutputChannels(); ch++)
             {
                 auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETABLE");
-                osc2[i].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
+                osc2[ch].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
             }
-
-            voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
         }
-    }
-
-
-        
+    }        
     MSCompressor.prepareToPlay(spec, sampleRate, samplesPerBlock, getTotalNumInputChannels());
 }
 
@@ -291,12 +251,13 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             }
 
             // ADSR 1
-            auto& adsr1 = voice->getAdsr1();
+            auto& ahdsr1 = voice->getAHDSR1();
             auto& attack1 = *apvts.getRawParameterValue("ATT1");
+            auto& hold1 = *apvts.getRawParameterValue("HOLD1");
             auto& decay1 = *apvts.getRawParameterValue("DEC1");
             auto& sustain1 = *apvts.getRawParameterValue("SUS1");
             auto& release1 = *apvts.getRawParameterValue("REL1");
-            adsr1.updateADSR1(attack1.load(), decay1.load(), sustain1.load(), release1.load());
+            ahdsr1.updateParams(attack1.load(), hold1.load(), decay1.load(), sustain1.load(), release1.load());
 
             // Filter1 Params
             auto& filterType1 = *apvts.getRawParameterValue("FILTERTYPE1");
@@ -306,16 +267,28 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& fDrive1 = *apvts.getRawParameterValue("FDRIVE1");
             auto& fEnv1 = *apvts.getRawParameterValue("FENV1");
 
-            voice->updateFilter(filterType1.load(), DBOct1.load(), cuttoff1.load(), res1.load(),
+            voice->updateFilter1(filterType1.load(), DBOct1.load(), cuttoff1.load(), res1.load(),
                 fDrive1.load(), fEnv1.load());
 
-            // ADSR 2
-            auto& adsr2 = voice->getAdsr2();
+            // Filter1 Params
+            auto& filterType2 = *apvts.getRawParameterValue("FILTERTYPE2");
+            auto& DBOct2 = *apvts.getRawParameterValue("DBOCT2");
+            auto& cuttoff2 = *apvts.getRawParameterValue("CUTOFF2");
+            auto& res2 = *apvts.getRawParameterValue("RES2");
+            auto& fDrive2 = *apvts.getRawParameterValue("FDRIVE2");
+            auto& fEnv2 = *apvts.getRawParameterValue("FENV2");
+
+            voice->updateFilter2(filterType2.load(), DBOct2.load(), cuttoff2.load(), res2.load(),
+                fDrive2.load(), fEnv2.load());
+
+            // AHDSR 2
+            auto& ahdsr2 = voice->getAHDSR2();
             auto& attack2 = *apvts.getRawParameterValue("ATT2");
+            auto& hold2 = *apvts.getRawParameterValue("HOLD2");
             auto& decay2 = *apvts.getRawParameterValue("DEC2");
             auto& sustain2 = *apvts.getRawParameterValue("SUS2");
             auto& release2 = *apvts.getRawParameterValue("REL2");
-            adsr2.updateADSR1(attack2.load(), decay2.load(), sustain2.load(), release2.load());
+            ahdsr2.updateParams(attack2.load(), hold2.load(), decay2.load(), sustain2.load(), release2.load());
 
             // Conv Distortion
 
@@ -353,6 +326,8 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             MSCompressor.updateMSCompParams(midsGain, sidesGain);
         }
     }    
+
+    
     // Master Bus routing
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
@@ -374,24 +349,6 @@ void BeastySynth1AudioProcessor::parameterChanged(const juce::String& parameterI
                 }
             }
 
-            // ADSR 1
-            if (parameterID == "ATT1" || "DEC1" || "SUS1" || "REL1")
-            {                
-
-            }
-
-            // Filter
-            if (parameterID == "FILTERTYPE1" || "DBOCT1" || "CUTOFF1" || "RES1 || FDRIVE1")
-            {
-
-            }
-
-            // ADSR 2
-            if (parameterID == "ATT2" || "DEC2" || "SUS2" || "REL2")
-            {
-
-            }
-
             // Convolution Distortion
             if (parameterID == "IRLOAD1" || "CDWET1" || "CDGAIN1")
             {
@@ -402,15 +359,12 @@ void BeastySynth1AudioProcessor::parameterChanged(const juce::String& parameterI
                 auto& cdGain1 = *apvts.getRawParameterValue("CDGAIN1");
                 convDist1.updateParams(static_cast<int>(cdIRType1), getIRDistFiles(), cdDryWet1, cdGain1);
             }
-            
-
 
             // MS multiband Compressor
             if (parameterID == "MIDSGAIN" || "SIDESGAIN")
             {
 
             }
-
         }
     }
 }
@@ -460,25 +414,33 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
     params.push_back(std::make_unique<juce::AudioParameterInt>("OSC1TRANS", "Osc 1 Transposition", -24, 24, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1GAIN", "Osc 1 Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.8f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1PAN", "Osc 1 Pan", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC1UNI", "Osc 1 Unison Voices", 0, 12, 0));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC1UNI", "Osc 1 Unison Voices", 0, 8, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1WIDTH", "Osc 1 Unison Width", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC1SPREAD", "Osc 1 Unison Spread", juce::NormalisableRange<float> {-2.0f, 2.0f, 0.01f}, 0.0f));
 
     // Osc 2 Wavetable 
     params.push_back(std::make_unique<juce::AudioParameterChoice>("OSC2WAVETABLE", "Osc 2 Wave Table", getWaveTableFiles(), 0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2MORPH", "Osc 2 Macro", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2MORPH", "Osc 2 Macro", juce::NormalisableRange<float> {0.0f, 1.0f, }, 0.0f));
     params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2TRANS", "Osc 2 Transposition", -24, 24, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2GAIN", "Osc 2 Gain", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.8f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2PAN", "Osc 2 Pan", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2UNI", "Osc 2 Unison Voices", 0, 12, 0));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSC2UNI", "Osc 2 Unison Voices", 0, 6, 0));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2WIDTH", "Osc 2 Unison Width", juce::NormalisableRange<float> {-1.0f, 1.0f, 0.01f}, 0.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("OSC2SPREAD", "Osc 2 Unison Spread", juce::NormalisableRange<float> {-2.0f, 2.0f, 0.01f}, 0.0f));
-     
-    // ADSR 1
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATT1", "Attack1", juce::NormalisableRange<float> {0.0f, 2.0f, 0.01f}, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DEC1", "Decay1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUS1", "Sustain1", juce::NormalisableRange<float> {0.1f, 1.0f, 0.01f}, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("REL1", "Release1", juce::NormalisableRange<float> {0.1f, 1.0f, 0.01f}, 0.5f));
+
+    // AHDSR 1
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATT1", "Attack1", juce::NormalisableRange<float> {0.0f, 5.0f, 0.01f}, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("HOLD1", "Hold1", juce::NormalisableRange<float> {0.0f, 5.0f, 0.01f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DEC1", "Decay1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUS1", "Sustain1", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("REL1", "Release1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.5f));
+
+    // AHDSR 2
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATT2", "Attack1", juce::NormalisableRange<float> {0.0f, 5.0f, 0.01f}, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("HOLD2", "Hold1", juce::NormalisableRange<float> {0.0f, 5.0f, 0.01f}, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DEC2", "Decay1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUS2", "Sustain1", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("REL2", "Release1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.5f));
 
     // filter 1
     params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE1", "Filter 1 Type", juce::StringArray{ "Lpf", "Bpf", "Hpf" }, 0));
@@ -488,11 +450,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FDRIVE1", "Filter 1 Drive", juce::NormalisableRange<float> {1.0f, 10.0f, 0.01f}, 1.0f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("FENV1", "Filter 1 Envelope", juce::NormalisableRange<float> {-10000.0f, 10000.0f, 0.01f, 0.4f, true}, 0.0f));
 
-    // Filter ADSR 2
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATT2", "Attack2", juce::NormalisableRange<float> {0.0f, 2.0f, 0.01f}, 0.01f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DEC2", "Decay2", juce::NormalisableRange<float> {0.1f, 2.0f, 0.01f}, 0.01f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUS2", "Sustain2", juce::NormalisableRange<float> {0.1f, 1.0f, 0.01f}, 0.5f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("REL2", "Release2", juce::NormalisableRange<float> {0.1f, 1.0f, 0.01f}, 0.5f));
+    // filter 2
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE2", "Filter 2 Type", juce::StringArray{ "Lpf", "Bpf", "Hpf" }, 0));
+    params.push_back(std::make_unique<juce::AudioParameterChoice>("DBOCT2", "Filter 2 DB oct", juce::StringArray{"12db/oct", "24db/oct"}, 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("CUTOFF2", "Filter 2 Cutoff Frequency", juce::NormalisableRange<float> {20.0f, 20000.0f, 0.1f, 0.4f}, 20000.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("RES2", "Filter 2 Resonance", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.3f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FDRIVE2", "Filter 2 Drive", juce::NormalisableRange<float> {1.0f, 10.0f, 0.01f}, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("FENV2", "Filter 2 Envelope", juce::NormalisableRange<float> {-10000.0f, 10000.0f, 0.01f, 0.4f, true}, 0.0f));
 
     // Convolution Distortion
     params.push_back(std::make_unique<juce::AudioParameterChoice>("IRLOAD1", "Conv Dist IR choice", getIRDistFiles(), 0));
@@ -528,8 +492,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
 
 juce::StringArray BeastySynth1AudioProcessor::getIRDistFiles()
 {
-    juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
-    juce::File resourcesFolder = projectDir.getChildFile("Source").getChildFile("Resources").getChildFile("IRDistortion");
+    //juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
+    //juce::File resourcesFolder = projectDir.getChildFile("Source").getChildFile("Resources").getChildFile("IRDistortion");
+
+    juce::File resourcesFolder =  juce::File::getSpecialLocation(
+                                     juce::File::SpecialLocationType::userDocumentsDirectory)
+                                     .getChildFile(ProjectInfo::companyName)
+                                     .getChildFile(ProjectInfo::projectName)
+                                     .getChildFile("IR Distortion");  // PresetDirectory
 
     juce::StringArray irFiles;
 
@@ -555,9 +525,15 @@ juce::StringArray BeastySynth1AudioProcessor::getIRDistFiles()
 
 juce::StringArray BeastySynth1AudioProcessor::getWaveTableFiles()
 {
-    juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
-    juce::File resourcesFolder = projectDir.getChildFile("Source")
-        .getChildFile("Resources").getChildFile("WaveTables");
+    //juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
+    //juce::File resourcesFolder = projectDir.getChildFile("Source")
+    //    .getChildFile("Resources").getChildFile("WaveTables");
+
+    juce::File resourcesFolder = juce::File::getSpecialLocation(
+        juce::File::SpecialLocationType::userDocumentsDirectory)
+        .getChildFile(ProjectInfo::companyName)
+        .getChildFile(ProjectInfo::projectName)
+        .getChildFile("WaveTables");  // PresetDirectory
 
     juce::StringArray waveTableFiles;
 
@@ -577,8 +553,5 @@ juce::StringArray BeastySynth1AudioProcessor::getWaveTableFiles()
     {
         juce::Logger::writeToLog("WaveTable folder not found.");
     }
-
     return waveTableFiles;
 }
-
-

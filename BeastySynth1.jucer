@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="Fo1ut9" name="BassBot" projectType="audioplug" useAppConfig="0"
+<JUCERPROJECT id="Fo1ut9" name="Bass Bot" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              pluginManufacturer="SoundMonkeys" companyName="Audio Bots" pluginVST3Category="Instrument,Stereo,Synth">
-  <MAINGROUP id="lNRTCf" name="BassBot">
+              pluginManufacturer="Audio Bots" companyName="Audio Bots" pluginVST3Category="Instrument,Stereo,Synth"
+              pluginFormats="buildAU,buildAUv3,buildStandalone,buildUnity,buildVST3">
+  <MAINGROUP id="lNRTCf" name="Bass Bot">
     <GROUP id="{613AEEB8-A650-72D9-3562-05776277BAFC}" name="Source">
       <FILE id="svVLWZ" name="PresetComponent.h" compile="0" resource="0"
             file="Source/PresetComponent.h"/>
@@ -23,6 +24,8 @@
       <GROUP id="{6CA221D5-7333-0DE3-447F-EF866D98A231}" name="Data">
         <FILE id="ACYMas" name="ADSR1Data.cpp" compile="1" resource="0" file="Source/Data/ADSR1Data.cpp"/>
         <FILE id="LfrAIt" name="ADSR1Data.h" compile="0" resource="0" file="Source/Data/ADSR1Data.h"/>
+        <FILE id="Rw39fK" name="AHDSRData.cpp" compile="1" resource="0" file="Source/Data/AHDSRData.cpp"/>
+        <FILE id="fiP7Wk" name="AHDSRData.h" compile="0" resource="0" file="Source/Data/AHDSRData.h"/>
         <FILE id="xzyI5r" name="ConvDistortionData.cpp" compile="1" resource="0"
               file="Source/Data/ConvDistortionData.cpp"/>
         <FILE id="hT6S7V" name="ConvDistortionData.h" compile="0" resource="0"
@@ -53,6 +56,10 @@
               file="Source/UI/ADSR1Component.cpp"/>
         <FILE id="sEFIw6" name="ADSR1Component.h" compile="0" resource="0"
               file="Source/UI/ADSR1Component.h"/>
+        <FILE id="vVSc2u" name="AHDSRComponent.cpp" compile="1" resource="0"
+              file="Source/UI/AHDSRComponent.cpp"/>
+        <FILE id="WR6oir" name="AHDSRComponent.h" compile="0" resource="0"
+              file="Source/UI/AHDSRComponent.h"/>
         <FILE id="Jbnn4D" name="ConvDistortionComponent.cpp" compile="1" resource="0"
               file="Source/UI/ConvDistortionComponent.cpp"/>
         <FILE id="pvgQDu" name="ConvDistortionComponent.h" compile="0" resource="0"
@@ -89,37 +96,7 @@
         <FILE id="lCwLXT" name="WTOscComponent.h" compile="0" resource="0"
               file="Source/UI/WTOscComponent.h"/>
       </GROUP>
-      <GROUP id="{67E6D658-0EB0-B073-0B73-6856B67FEFAA}" name="Resources">
-        <GROUP id="{991E654D-D7A0-5B8B-65C0-DF7697FC79C4}" name="IRDistortion">
-          <FILE id="R5wa3W" name="Brohymn Mesa 4x12 SM57 V30 1.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 1.wav"/>
-          <FILE id="yKlVnz" name="Brohymn Mesa 4x12 SM57 V30 2.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 2.wav"/>
-          <FILE id="yiWqxX" name="Brohymn Mesa 4x12 SM57 V30 3.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn Mesa 4x12 SM57 V30 3.wav"/>
-          <FILE id="DaNv20" name="Brohymn-Mesa-4x12-SM57-V30-4.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-4.wav"/>
-          <FILE id="QYzAIn" name="Brohymn-Mesa-4x12-SM57-V30-5.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-5.wav"/>
-          <FILE id="mxYTNg" name="Brohymn-Mesa-4x12-SM57-V30-6.wav" compile="0"
-                resource="1" file="Source/Resources/IRDistortion/Brohymn-Mesa-4x12-SM57-V30-6.wav"/>
-          <FILE id="bfUp0C" name="ExcaliburBright1.wav" compile="0" resource="1"
-                file="Source/Resources/IRDistortion/ExcaliburBright1.wav"/>
-          <FILE id="eHl0JR" name="ExcaliburDark1.wav" compile="0" resource="1"
-                file="Source/Resources/IRDistortion/ExcaliburDark1.wav"/>
-          <FILE id="XQxwxC" name="ExcaliburNeutral.wav" compile="0" resource="1"
-                file="Source/Resources/IRDistortion/ExcaliburNeutral.wav"/>
-          <FILE id="on2cch" name="LT Brit 412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT Brit 412.wav"/>
-          <FILE id="nOxUva" name="LT MARV412.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT MARV412.wav"/>
-          <FILE id="svuWam" name="LT TV Mix.wav" compile="0" resource="1" file="Source/Resources/IRDistortion/LT TV Mix.wav"/>
-        </GROUP>
-        <GROUP id="{5D12AD0F-B83B-9268-D8A4-06B447CECFD2}" name="WaveTables">
-          <FILE id="pXVaqr" name="FIRST.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/FIRST.WAV"/>
-          <FILE id="xLitCb" name="PRECIPIC.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/PRECIPIC.WAV"/>
-          <FILE id="uJ9FLB" name="TEN_ADDI.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/TEN_ADDI.WAV"/>
-          <FILE id="lKJiQg" name="TRANSFOR.WAV" compile="0" resource="1" file="Source/Resources/WaveTables/TRANSFOR.WAV"/>
-        </GROUP>
-      </GROUP>
+      <GROUP id="{67E6D658-0EB0-B073-0B73-6856B67FEFAA}" name="Resources"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>
@@ -142,8 +119,8 @@
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="BeastySynth1" enablePluginBinaryCopyStep="1"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="BeastySynth1" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Bass Bot" enablePluginBinaryCopyStep="1"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Bass Bot" enablePluginBinaryCopyStep="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>

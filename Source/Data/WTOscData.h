@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "UnisonOsc.h"
 
 class WTOscData : public juce::dsp::Oscillator<float>
 {
@@ -24,6 +25,8 @@ public:
     void renderNextBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples);
     void setWaveFrequency(const int midiNoteNumber);
 
+    float getNextSample();
+
     void updateOscParams(const float& morph, const int& transposition,
         const float& gain, const float& pan, const int& uniVoices, const float& uniWidth,
         const float& uniSpread);
@@ -35,20 +38,27 @@ public:
     void resetAll();
 
 private:
-    juce::AudioBuffer<float> waveTableBuffer;
+    std::vector<juce::AudioBuffer<float>> wavetables;
+
+    juce::AudioBuffer<float> wavBuffer;
     std::vector<float> wavetableData;
 
-    int waveTableSize{ 1024 };
+    int wavetableSize{ 512 };
     float morphPosition = 0.0f; // Morph position between 0.0 and 1.0
 
-    juce::dsp::Oscillator<float> wavetableOscillator; // JUCE dsp Oscillator
-    float sampleRate = 44100.0f;
+    double currentSampleRate = 44100.0f;
 
     juce::dsp::Gain<float> oscGain;
     juce::dsp::Panner<float> oscPan;
     
-    float spread{ 0.0f };
-
     int lastMidiNoteNum{ 64 };
     int trans{ 0 };
+
+    // Unison Voices
+    static constexpr int maxUnisonVoices{ 6 };
+    std::array<UnisonOsc, maxUnisonVoices> uniOscs;
+    int uniVoicesParam = 0;
+
+    float spread{ 0.0f };
+
 };

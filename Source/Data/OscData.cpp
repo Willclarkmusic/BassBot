@@ -52,6 +52,7 @@ void OscData::renderNextBuffer(juce::AudioBuffer<float>& buffer, int startSample
     {
         uniOscs[i].renderNextBuffer(buffer, startSample, numSamples);
     }
+
     oscGain.process(context);
     oscPan.process(context);
 }
@@ -108,8 +109,7 @@ void OscData::setWaveFrequency(const int midiNoteNumber)
         {
             uniOscs[i].setUniFrequency(i, currentFreq - (float(i) * 0.1f), spread);
         }
-    }
-    
+    }    
 }
 
 void OscData::setWaveType(const int choice)
@@ -152,7 +152,3 @@ void OscData::resetAll()
     //fmOsc.reset();
     oscGain.reset();
 }
-
-
-
-

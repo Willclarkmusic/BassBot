@@ -16,9 +16,9 @@ BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "CompanyName",  "Audio Bots\0"
-      VALUE "FileDescription",  "BassBot\0"
+      VALUE "FileDescription",  "Bass Bot\0"
       VALUE "FileVersion",  "1.0.0\0"
-      VALUE "ProductName",  "BassBot\0"
+      VALUE "ProductName",  "Bass Bot\0"
       VALUE "ProductVersion",  "1.0.0\0"
     END
   END

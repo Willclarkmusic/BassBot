@@ -31,9 +31,9 @@ float OscSubData::processNextSample(float input)
     return oscGain.processSample(processSample(input));
 }
 
-void OscSubData::renderNextBlock(juce::dsp::AudioBlock<float>& audioBlock)
+void OscSubData::renderNextBuffer(juce::AudioBuffer<float>& audioBuffer)
 {
-    jassert(audioBlock.getNumSamples() > 0);
+    juce::dsp::AudioBlock<float> audioBlock{ audioBuffer };
     process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
     oscGain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
