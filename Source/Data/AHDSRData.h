@@ -19,8 +19,8 @@ public:
     void noteOn();
     void noteOff();
 
-    void updateParams(float attack, float hold, float decay, float sustain, float release);
-        //float attackSlope, float decaySlope, float releaseSlope);
+    void updateParams(float attack, float hold, float decay, float sustain, float release,
+        float attackSlope, float decaySlope, float releaseSlope);
 
     void applyEnvelopeToBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples);
     float getNextSample();

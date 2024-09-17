@@ -13,11 +13,12 @@
 
 //==============================================================================
 AHDSRComponent::AHDSRComponent(juce::AudioProcessorValueTreeState& apvts, juce::String attackID,
-    juce::String holdID, juce::String decayID, juce::String sustainID, juce::String releaseID)
+    juce::String holdID, juce::String decayID, juce::String sustainID, juce::String releaseID,
+    juce::String attackSlopeID, juce::String decaySlopeID, juce::String releaseSlopeID)
 {
     attackKnob.createKnobWithLabel(apvts, attackID, "A");
     addAndMakeVisible(attackKnob);
-    holdKnob.createKnobWithLabel(apvts, holdID, "A");
+    holdKnob.createKnobWithLabel(apvts, holdID, "H");
     addAndMakeVisible(holdKnob);
     decaykKnob.createKnobWithLabel(apvts, decayID, "D");
     addAndMakeVisible(decaykKnob);
@@ -26,6 +27,12 @@ AHDSRComponent::AHDSRComponent(juce::AudioProcessorValueTreeState& apvts, juce::
     releaseKnob.createKnobWithLabel(apvts, releaseID, "R");
     addAndMakeVisible(releaseKnob);
 
+    attackSlopeKnob.createKnobWithLabel(apvts, attackSlopeID, "slope");
+    addAndMakeVisible(attackSlopeKnob);    
+    decaySlopeKnob.createKnobWithLabel(apvts, decaySlopeID, "slope");
+    addAndMakeVisible(decaySlopeKnob);    
+    releasekSlopeKnob.createKnobWithLabel(apvts, releaseSlopeID, "slope");
+    addAndMakeVisible(releasekSlopeKnob);
 }
 
 AHDSRComponent::~AHDSRComponent()
@@ -48,4 +55,8 @@ void AHDSRComponent::resized()
     decaykKnob.setBoundsKnobWithLabel(holdKnob.getRight(), padding);
     sustainKnob.setBoundsKnobWithLabel(decaykKnob.getRight(), padding);
     releaseKnob.setBoundsKnobWithLabel(sustainKnob.getRight(), padding);
+
+    attackSlopeKnob.setBoundsKnobWithLabel(attackKnob.getPosition().getX(), attackKnob.getBottom());
+    decaySlopeKnob.setBoundsKnobWithLabel(decaykKnob.getPosition().getX(), decaykKnob.getBottom());
+    releasekSlopeKnob.setBoundsKnobWithLabel(releaseKnob.getPosition().getX(), releaseKnob.getBottom());
 }

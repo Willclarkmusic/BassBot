@@ -58,10 +58,6 @@ private:
     bool isPrepared{ false };
     juce::dsp::ProcessSpec spec;
     
-    // Envelopes
-    AHDSRData ahdsr1;
-    AHDSRData ahdsr2;
-
     // LFOs
 
     // Audio Busses
@@ -76,6 +72,10 @@ private:
     std::array<OscData, numVoicesToProcess> osc1;
     std::array<WTOscData, numVoicesToProcess> osc2;
     std::array<OscSubData, numVoicesToProcess> oscSub;
+
+    // Envelopes
+    AHDSRData ahdsr1;
+    AHDSRData ahdsr2;
 
     // Filter 1
     FilterData filter1; 

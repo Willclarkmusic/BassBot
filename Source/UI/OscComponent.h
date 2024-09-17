@@ -29,7 +29,8 @@ public:
 private:
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
     using ComboBoxAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
-    using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
+
+    SectionTitleLabel osc1Title;
 
     ComboBoxMedium waveSelector;
 
@@ -38,8 +39,8 @@ private:
     AnimatedKnobMedium gainKnob;
     AnimatedKnobMedium panKnob;
     AnimatedKnobMedium unisonKnob;
-    AnimatedKnobMedium widthKnob;
-    AnimatedKnobMedium spreadKnob;
+    SliderBoxMedium widthKnob;
+    SliderBoxMedium spreadKnob;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OscComponent)
 };

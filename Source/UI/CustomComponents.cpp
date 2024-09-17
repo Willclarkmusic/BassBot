@@ -44,6 +44,33 @@ void CustomComponents::resized()
 
 //==============================================================================
 
+void SectionTitleLabel::createSectionTitle(juce::String labelString)
+{
+    setSize(boundsWidth, boundsHeight);
+
+    label.setText(labelString, juce::NotificationType::dontSendNotification);
+    label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::antiquewhite);
+    label.setJustificationType(juce::Justification::centred);
+    label.setFont(16.0f);
+    addAndMakeVisible(label);
+}
+
+void SectionTitleLabel::setBoundsSectionTitle(int xPos, int yPos, int charCount)
+{
+
+    //boundsWidth = charCount * 5;
+
+    setBounds(xPos, yPos, boundsWidth, boundsHeight);
+    label.setBounds(padding, 0, labelWidth, labelHeight);
+}
+
+void SectionTitleLabel::paint(juce::Graphics& g)
+{
+    g.fillAll(juce::Colours::transparentBlack);
+}
+
+//==============================================================================
+
 void AnimatedKnobMedium::createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& paramID, juce::String labelString)
 {
     setSize(knobRadius, knobRadius + (2 * labelHeight));
@@ -127,3 +154,75 @@ void ComboBoxMedium::paint(juce::Graphics& g)
     g.setColour(juce::Colours::ghostwhite);
     g.drawRect(getLocalBounds().reduced(5));
 }
+
+//==============================================================================
+
+void SliderBoxMedium::createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& paramID, juce::String labelString)
+{
+    setSize(knobWidth, knobHeight + labelHeight);
+
+    slider.setSliderStyle(juce::Slider::SliderStyle::LinearBarVertical);
+    slider.setSliderSnapsToMousePosition(false);
+    slider.setColour(juce::Slider::trackColourId, juce::Colours::transparentBlack);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, labelWidth, labelHeight);
+    addAndMakeVisible(slider);
+
+    attachment = std::make_unique<SliderAttachment>(apvts, paramID, slider);
+
+    label.setText(labelString, juce::NotificationType::dontSendNotification);
+    label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::antiquewhite);
+    label.setJustificationType(juce::Justification::centred);
+    label.setFont(10.0f);
+    addAndMakeVisible(label);
+}
+
+void SliderBoxMedium::setBoundsKnobWithLabel(int xPos, int yPos)
+{
+    setBounds(xPos, yPos, boundsWidth, boundsHeight);
+    label.setBounds(0, padding, labelWidth, labelHeight);
+    slider.setBounds((boundsWidth - knobWidth) / 2, label.getBottom(), knobWidth, knobHeight);
+}
+
+void SliderBoxMedium::paint(juce::Graphics& g)
+{
+    //g.fillAll(juce::Colours::darkgrey);
+    g.setColour(juce::Colours::ghostwhite);
+    g.drawRect(getLocalBounds().reduced(5));
+}
+
+//==============================================================================
+
+void SliderBoxSmall::createKnobWithLabel(juce::AudioProcessorValueTreeState& apvts, juce::String& paramID, juce::String labelString)
+{
+    setSize(knobWidth, knobHeight + labelHeight);
+
+    slider.setSliderStyle(juce::Slider::SliderStyle::LinearBarVertical);
+    slider.setSliderSnapsToMousePosition(false);
+    slider.setColour(juce::Slider::trackColourId, juce::Colours::transparentBlack);
+    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, true, labelWidth, labelHeight);
+    addAndMakeVisible(slider);
+
+    attachment = std::make_unique<SliderAttachment>(apvts, paramID, slider);
+
+    label.setText(labelString, juce::NotificationType::dontSendNotification);
+    label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::antiquewhite);
+    label.setJustificationType(juce::Justification::centred);
+    label.setFont(8.0f);
+    addAndMakeVisible(label);
+}
+
+void SliderBoxSmall::setBoundsKnobWithLabel(int xPos, int yPos)
+{
+    setBounds(xPos, yPos, boundsWidth, boundsHeight);
+    label.setBounds(padding, 0, labelWidth, labelHeight);
+    slider.setBounds(padding, label.getBottom(), knobWidth, knobHeight);
+
+}
+
+void SliderBoxSmall::paint(juce::Graphics& g)
+{
+    g.fillAll(juce::Colours::transparentBlack);
+}
+
+//==============================================================================
+

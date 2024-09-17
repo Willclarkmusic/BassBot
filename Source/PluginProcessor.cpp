@@ -250,14 +250,7 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
                     osc2UniVoices, osc2UniWidth, osc2UniSpread);
             }
 
-            // ADSR 1
-            auto& ahdsr1 = voice->getAHDSR1();
-            auto& attack1 = *apvts.getRawParameterValue("ATT1");
-            auto& hold1 = *apvts.getRawParameterValue("HOLD1");
-            auto& decay1 = *apvts.getRawParameterValue("DEC1");
-            auto& sustain1 = *apvts.getRawParameterValue("SUS1");
-            auto& release1 = *apvts.getRawParameterValue("REL1");
-            ahdsr1.updateParams(attack1.load(), hold1.load(), decay1.load(), sustain1.load(), release1.load());
+
 
             // Filter1 Params
             auto& filterType1 = *apvts.getRawParameterValue("FILTERTYPE1");
@@ -281,6 +274,19 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             voice->updateFilter2(filterType2.load(), DBOct2.load(), cuttoff2.load(), res2.load(),
                 fDrive2.load(), fEnv2.load());
 
+            // ADSR 1
+            auto& ahdsr1 = voice->getAHDSR1();
+            auto& attack1 = *apvts.getRawParameterValue("ATT1");
+            auto& hold1 = *apvts.getRawParameterValue("HOLD1");
+            auto& decay1 = *apvts.getRawParameterValue("DEC1");
+            auto& sustain1 = *apvts.getRawParameterValue("SUS1");
+            auto& release1 = *apvts.getRawParameterValue("REL1");
+            auto& attackSlope1 = *apvts.getRawParameterValue("ATTSL1");
+            auto& decaySlope1 = *apvts.getRawParameterValue("DECSL1");
+            auto& releaseSlope1 = *apvts.getRawParameterValue("RELSL1");
+            ahdsr1.updateParams(attack1.load(), hold1.load(), decay1.load(), sustain1.load(), release1.load(),
+                attackSlope1.load(), decaySlope1.load(), releaseSlope1.load());
+
             // AHDSR 2
             auto& ahdsr2 = voice->getAHDSR2();
             auto& attack2 = *apvts.getRawParameterValue("ATT2");
@@ -288,7 +294,11 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& decay2 = *apvts.getRawParameterValue("DEC2");
             auto& sustain2 = *apvts.getRawParameterValue("SUS2");
             auto& release2 = *apvts.getRawParameterValue("REL2");
-            ahdsr2.updateParams(attack2.load(), hold2.load(), decay2.load(), sustain2.load(), release2.load());
+            auto& attackSlope2 = *apvts.getRawParameterValue("ATTSL2");
+            auto& decaySlope2 = *apvts.getRawParameterValue("DECSL2");
+            auto& releaseSlope2 = *apvts.getRawParameterValue("RELSL2");
+            ahdsr2.updateParams(attack2.load(), hold2.load(), decay2.load(), sustain2.load(), release2.load(), 
+                attackSlope2.load(), decaySlope2.load(), releaseSlope2.load());
 
             // Conv Distortion
 
@@ -434,6 +444,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DEC1", "Decay1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.1f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("SUS1", "Sustain1", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("REL1", "Release1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTSL1", "Release1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECSL1", "Release1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELSL1", "Release1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 1.0f));
 
     // AHDSR 2
     params.push_back(std::make_unique<juce::AudioParameterFloat>("ATT2", "Attack1", juce::NormalisableRange<float> {0.0f, 5.0f, 0.01f}, 0.1f));
@@ -441,6 +454,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
     params.push_back(std::make_unique<juce::AudioParameterFloat>("DEC2", "Decay1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.1f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("SUS2", "Sustain1", juce::NormalisableRange<float> {0.0f, 1.0f, 0.01f}, 0.5f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>("REL2", "Release1", juce::NormalisableRange<float> {0.01f, 5.0f, 0.01f}, 0.5f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTSL2", "Release1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECSL2", "Release1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELSL2", "Release1", juce::NormalisableRange<float> {0.01f, 2.0f, 0.01f}, 1.0f));
 
     // filter 1
     params.push_back(std::make_unique<juce::AudioParameterChoice>("FILTERTYPE1", "Filter 1 Type", juce::StringArray{ "Lpf", "Bpf", "Hpf" }, 0));

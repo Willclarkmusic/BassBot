@@ -25,11 +25,12 @@ void AHDSRData::noteOn()
 void AHDSRData::noteOff()
 {
     state = State::Release;
-    //currentSample = 0;
+    currentSample = 0;
 }
 
 void AHDSRData::applyEnvelopeToBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples)
 {
+
     for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
     {
         auto* channelData = buffer.getWritePointer(channel);
@@ -67,7 +68,6 @@ float AHDSRData::getNextSample()
         break;
 
     case State::Sustain:
-        // Remain at sustain level
         break;
 
     case State::Release:
@@ -89,8 +89,8 @@ float AHDSRData::getNextSample()
     return envelopeValue;
 }
 
-void AHDSRData::updateParams(float newAttack, float newHold, float newDecay, float newSustain, float newRelease)
-    //float newAttackSlope, float newDecaySlope, float newReleaseSlope)
+void AHDSRData::updateParams(float newAttack, float newHold, float newDecay, float newSustain, float newRelease,
+    float newAttackSlope, float newDecaySlope, float newReleaseSlope)
 {
     attack = newAttack;
     hold = newHold;
@@ -98,9 +98,9 @@ void AHDSRData::updateParams(float newAttack, float newHold, float newDecay, flo
     sustain = newSustain;
     release = newRelease;
 
-    //attackSlope = newAttackSlope;
-    //decaySlope = newDecaySlope;
-    //releaseSlope = newReleaseSlope;
+    attackSlope = newAttackSlope;
+    decaySlope = newDecaySlope;
+    releaseSlope = newReleaseSlope;
 
     calculateEnvelopeTimes();
 }

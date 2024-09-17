@@ -15,19 +15,28 @@
 FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& apvts, juce::String filterTypeSelectorId,
     juce::String dbOctID, juce::String driveID, juce::String cutoffID, juce::String resID, juce::String envID)
 {
+    //Title
+    filterTitle.createSectionTitle("Filter");
+    addAndMakeVisible(filterTitle);
+
     // Filter select
-    juce::StringArray choices1{ "Lpf", "Bpf", "Hpf" };
-    setComboBoxDefault(apvts, choices1, typeSelector, filterTypeSelectorId, typeSelectorAttachment);
+    juce::StringArray choices{ "Lpf", "Bpf", "Hpf" };
+    typeSelector.createComboBox(apvts, filterTypeSelectorId, choices);
+    addAndMakeVisible(typeSelector);
+
+    juce::StringArray choices2{ "12db/oct", "24db/oct" };
+    dbOctSelector.createComboBox(apvts, dbOctID, choices2);
+    addAndMakeVisible(dbOctSelector);
 
     // Filter DB/oct
-    juce::StringArray choices2{ "12db/oct", "24db/oct" };
-    setComboBoxDefault(apvts, choices2, dbOctSelector, dbOctID, dbOctSelectorAttachment);
-
-    setSliderLabelDefault(driveSlider, driveLabel, apvts, driveID, driveSliderAttachment);
-    setSliderLabelDefault(cutoffSlider, cutoffLabel, apvts, cutoffID, cutoffSliderAttachment);
-    setSliderLabelDefault(resSlider, resLabel, apvts, resID, resSliderAttachment);
-    setSliderLabelDefault(envSlider, envLabel, apvts, envID, envSliderAttachment);
-
+    cutoffKnob.createKnobWithLabel(apvts, cutoffID, "Cutoff");
+    addAndMakeVisible(cutoffKnob);
+    resKnob.createKnobWithLabel(apvts, resID, "Res");
+    addAndMakeVisible(resKnob);
+    driveSlider.createKnobWithLabel(apvts, driveID, "Drive");
+    addAndMakeVisible(driveSlider);
+    envAmountSlider.createKnobWithLabel(apvts, envID, "Env2");
+    addAndMakeVisible(envAmountSlider);
 }
 
 FilterComponent::~FilterComponent()
@@ -47,76 +56,19 @@ void FilterComponent::resized()
     const auto padding = 5;
     const auto bounds = getLocalBounds().reduced(10);
 
-    // Selector menu sizes
-    const auto selectorWidth = 60;
-    const auto selectorHeight = 20;
+    // Title
+    filterTitle.setBoundsSectionTitle(padding, 8, 5);
 
-    typeSelector.setBounds(10, 10, selectorWidth, selectorHeight);
-    dbOctSelector.setBounds(typeSelector.getRight() + padding, 10, selectorWidth, selectorHeight);
+    // Selector menu sizes
+    typeSelector.setBoundsComboBox(filterTitle.getRight(), 8);
+    dbOctSelector.setBoundsComboBox(typeSelector.getRight(), 8);
 
     // Knob sizes
-    const auto smKnobWidth = 50;
-    const auto smKnobHeight = 50;
-    const auto defKnobWidth = 80;
-    const auto defKnobHeight = 80;
     const auto KnobStartX = padding;
-    const auto KnobStartY = typeSelector.getBottom() + padding;
-    const auto labelHeight = 15;
-    const auto labelWidth = defKnobWidth;
-
-    setBoundsSliderWLabel(driveSlider, driveLabel, KnobStartX, KnobStartY, defKnobHeight,
-        labelWidth, labelHeight, padding);
-    setBoundsSliderWLabel(cutoffSlider, cutoffLabel, driveSlider.getRight(), KnobStartY, defKnobHeight,
-        labelWidth, labelHeight, padding);
-    setBoundsSliderWLabel(resSlider, resLabel, cutoffSlider.getRight(), KnobStartY, defKnobHeight,
-        labelWidth, labelHeight, padding);
-    setBoundsSliderWLabel(envSlider, envLabel, resSlider.getRight(), KnobStartY, defKnobHeight,
-        labelWidth, labelHeight, padding);
+    const auto KnobStartY = filterTitle.getBottom();
+    
+    cutoffKnob.setBoundsKnobWithLabel(KnobStartX, KnobStartY);
+    resKnob.setBoundsKnobWithLabel(cutoffKnob.getRight(), KnobStartY);
+    driveSlider.setBoundsKnobWithLabel(resKnob.getRight(), KnobStartY);
+    envAmountSlider.setBoundsKnobWithLabel(resKnob.getRight(), driveSlider.getBottom());
 }
-
-void FilterComponent::setComboBoxDefault(juce::AudioProcessorValueTreeState& apvts, juce::StringArray& choices,
-    juce::ComboBox& comboBox, juce::String& ID, std::unique_ptr <ComboBoxAttachment>& attachment)
-{
-    using ComboBoxAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
-
-    comboBox.addItemList(choices, 1);
-    addAndMakeVisible(comboBox);
-    attachment = std::make_unique<ComboBoxAttachment>(apvts, ID, comboBox);
-}
-
-void FilterComponent::setBoundsSliderWLabel(juce::Slider& slider, juce::Label& label, int xPos, int yPos, int sliderWH, int labelW, int labelH, int padding)
-{
-    label.setBounds(xPos, yPos, labelW, labelH);
-    slider.setBounds(xPos, label.getBottom(), sliderWH, sliderWH);
-}
-
-void FilterComponent::setSliderLabelDefault(juce::Slider& slider, juce::Label& label,
-    juce::AudioProcessorValueTreeState& apvts, juce::String ID,
-    std::unique_ptr<SliderAttachment>& attachment)
-{
-    slider.setSliderStyle(juce::Slider::SliderStyle::RotaryHorizontalVerticalDrag);
-    slider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 15);
-    addAndMakeVisible(slider);
-
-    attachment = std::make_unique<SliderAttachment>(apvts, ID, slider);
-
-    label.setColour(juce::Label::ColourIds::textColourId, juce::Colours::white);
-    label.setJustificationType(juce::Justification::centred);
-    label.setFont(10.0f);
-    addAndMakeVisible(label);
-}
-
-void FilterComponent::setTextButtonDefault(juce::TextButton& button, juce::String& label,
-    juce::AudioProcessorValueTreeState& apvts, juce::String ID,
-    std::unique_ptr<ButtonAttachment>& attachment)
-{
-    button.setClickingTogglesState(true);
-    button.setButtonText(label);
-    addAndMakeVisible(button);
-
-    attachment = std::make_unique<ButtonAttachment>(apvts, ID, button);
-}
-
-
-
-

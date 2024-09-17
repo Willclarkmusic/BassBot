@@ -14,12 +14,12 @@ BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1
     : AudioProcessorEditor(&p), audioProcessor(p), presetPanel(p.getPresetManager()),
     osc1(audioProcessor.apvts, "OSC1WAVETYPE", "OSC1MACRO", "OSC1TRANS", "OSC1GAIN", "OSC1PAN", "OSC1UNI", "OSC1WIDTH", "OSC1SPREAD"),
     osc2(audioProcessor, audioProcessor.apvts, "OSC2WAVETABLE", "OSC2MORPH", "OSC2TRANS", "OSC2GAIN", "OSC2PAN", "OSC2UNI", "OSC2WIDTH", "OSC2SPREAD"),
-    ahdsr1(audioProcessor.apvts, "ATT1", "HOLD1", "DEC1", "SUS1", "REL1"),
+    ahdsr1(audioProcessor.apvts, "ATT1", "HOLD1", "DEC1", "SUS1", "REL1", "ATTSL1", "DECSL1", "RELSL1"),
     filter1(audioProcessor.apvts, "FILTERTYPE1", "DBOCT1", "FDRIVE1", "CUTOFF1", "RES1", "FENV1"),
     filter2(audioProcessor.apvts, "FILTERTYPE2", "DBOCT2", "FDRIVE2", "CUTOFF2", "RES2", "FENV2"),
     convDist1(audioProcessor, audioProcessor.apvts, "IRLOAD1", "CDWET1", "CDGAIN1"),
     reverb1(audioProcessor.apvts, "SIZE1", "DAMP1", "WIDTH1", "WET1", "DRY1"),
-    ahdsr2(audioProcessor.apvts, "ATT2", "HOLD2", "DEC2", "SUS2", "REL2"),
+    ahdsr2(audioProcessor.apvts, "ATT2", "HOLD2", "DEC2", "SUS2", "REL2", "ATTSL1", "DECSL1", "RELSL1"),
     oscSub(audioProcessor.apvts, "OSCSUBWAVETYPE", "OSCSUBMACRO", "OSCSUBTRANS", "OSCSUBGAIN"),
     waveShaper1(audioProcessor.apvts, "WSINPUT1", "WSOUTPUT1", "WSTYPE1"),
     MSCompressor(audioProcessor.apvts, "MIDSGAIN", "SIDESGAIN")
@@ -75,8 +75,8 @@ void BeastySynth1AudioProcessorEditor::resized()
 
     // Third Row 
     int yThird = osc2.getBottom();
-    ahdsr1.setBounds(0, yThird, 300, 100);
-    ahdsr2.setBounds(ahdsr1.getRight(), yThird, 300, 100);
+    ahdsr1.setBounds(0, yThird, 300, 110);
+    ahdsr2.setBounds(ahdsr1.getRight(), yThird, 300, 110);
 
     // Bottom Row
     int yBot = ahdsr1.getBottom();

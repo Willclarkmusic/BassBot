@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "CustomComponents.h"
 
 //==============================================================================
 /*
@@ -28,37 +29,14 @@ public:
 private:
     using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
 
-    void setSliderLabelDefault(juce::Slider& slider, juce::Label& label,
-        juce::AudioProcessorValueTreeState& apvts, juce::String ID,
-        std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>& attachment);
+    SectionTitleLabel reverbTitle;
+    
+    AnimatedKnobMedium sizeSlider;
+    AnimatedKnobMedium dampSlider;
+    AnimatedKnobMedium widthSlider;
 
-    void setBoundsSliderWLabel(juce::Slider& slider, juce::Label& label, int xPos, int yPos,
-        int sliderWH, int labelW, int labelH, int padding);
-
-    // Transpose
-    juce::Slider sizeSlider;
-    std::unique_ptr<SliderAttachment> sizeAttachment;
-    juce::Label sizeLabel{ "Size", "Size" };
-
-    // Transpose
-    juce::Slider dampSlider;
-    std::unique_ptr<SliderAttachment> dampAttachment;
-    juce::Label dampLabel{ "Damp", "Damp" };
-
-    // Transpose
-    juce::Slider widthSlider;
-    std::unique_ptr<SliderAttachment> widthAttachment;
-    juce::Label widthLabel{ "Width", "Width" };
-
-    // Transpose
-    juce::Slider drySlider;
-    std::unique_ptr<SliderAttachment> dryAttachment;
-    juce::Label dryLabel{ "Dry", "Dry" };
-
-    // Transpose
-    juce::Slider wetSlider;
-    std::unique_ptr<SliderAttachment> wetAttachment;
-    juce::Label wetLabel{ "Wet", "Wet" };
+    SliderBoxMedium wetSlider;
+    SliderBoxMedium drySlider;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Reverb1Component)
 };

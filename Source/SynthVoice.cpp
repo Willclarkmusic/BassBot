@@ -83,8 +83,8 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 {
     jassert(isPrepared);
 
-    //if (! isVoiceActive())
-    //    return;
+    if (! isVoiceActive())
+        return;
 
     //Osc1 Audio Bus
     osc1Buffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
@@ -107,7 +107,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     for (int ch = 0; ch < outputBuffer.getNumChannels(); ch++)
     {
-        osc1FXBuffer.copyFrom(ch, 0, osc1Buffer, ch, 0, numSamples);
+        osc1FXBuffer.addFrom(ch, 0, osc1Buffer, ch, 0, numSamples);
     }
 
     convDist1.process(osc1FXBuffer);
@@ -130,7 +130,7 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     for (int ch = 0; ch < outputBuffer.getNumChannels(); ch++)
     {
-        osc2FXBuffer.copyFrom(ch, 0, osc2Buffer, ch, 0, numSamples);
+        osc2FXBuffer.addFrom(ch, 0, osc2Buffer, ch, 0, numSamples);
     }
 
     //OscSub Audio Bus
