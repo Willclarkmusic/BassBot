@@ -72,6 +72,8 @@
               file="Source/UI/FilterComponent.cpp"/>
         <FILE id="n8KOaW" name="FilterComponent.h" compile="0" resource="0"
               file="Source/UI/FilterComponent.h"/>
+        <FILE id="HS7dQE" name="HorizontalMeter.h" compile="0" resource="0"
+              file="Source/UI/HorizontalMeter.h"/>
         <FILE id="z1Fw23" name="MSCompressorComponent.cpp" compile="1" resource="0"
               file="Source/UI/MSCompressorComponent.cpp"/>
         <FILE id="qZxpQK" name="MSCompressorComponent.h" compile="0" resource="0"

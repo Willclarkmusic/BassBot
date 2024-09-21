@@ -24,19 +24,27 @@
 class SynthVoice : public juce::SynthesiserVoice
 {
 public:
-    bool canPlaySound (juce::SynthesiserSound*) override;
+    bool canPlaySound (juce::SynthesiserSound* sound) override;
     void startNote (int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition) override;
     void stopNote (float velocity, bool allowTailOff) override;
     void controllerMoved (int controllerNumber, int newControllerValue) override;
     void pitchWheelMoved (int newPitchWheenValue) override;
     void prepareToPlay (double sampleRate, int samplesPerBlock, int outputChannels);
-    void renderNextBlock (juce::AudioBuffer<float> &outputBuffer, int startSample, int numSamples) override;
+    void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
+
+    void renderOsc1Bus(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples);
+    void renderOsc2Bus(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples);
+    void renderSubBus(juce::AudioBuffer<float>& subBuffer, int startSample, int numSamples);
 
     void reset();
 
-    std::array<OscData, 2>& getOscillator1() { return osc1; }
-    std::array<WTOscData, 2>& getOscillator2() { return osc2; }
-    std::array<OscSubData, 2>& getSubOscillator() { return oscSub; }
+
+    static constexpr int numVoicesToProcess{ 1 };  // Polyphony
+    static constexpr int getNumVoicesToProcess() { return numVoicesToProcess; }
+
+    std::array<OscData, numVoicesToProcess>& getOscillator1() { return osc1; }
+    std::array<WTOscData, numVoicesToProcess>& getOscillator2() { return osc2; }
+    OscSubData& getSubOscillator() { return oscSub; }
     
     AHDSRData& getAHDSR1() { return ahdsr1; }
     AHDSRData& getAHDSR2() { return ahdsr2; }
@@ -68,19 +76,16 @@ private:
     juce::AudioBuffer<float> oscSubBuffer;
 
     // Oscilators
-    static constexpr int numVoicesToProcess{ 2 };
     std::array<OscData, numVoicesToProcess> osc1;
     std::array<WTOscData, numVoicesToProcess> osc2;
-    std::array<OscSubData, numVoicesToProcess> oscSub;
+    OscSubData oscSub;
 
     // Envelopes
     AHDSRData ahdsr1;
     AHDSRData ahdsr2;
 
-    // Filter 1
+    // Filters
     FilterData filter1; 
-
-    // Filter 2
     FilterData filter2; 
 
     // Convolution Distortion 1

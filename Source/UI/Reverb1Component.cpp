@@ -57,6 +57,4 @@ void Reverb1Component::resized()
     dampSlider.setBoundsKnobWithLabel(widthSlider.getRight(), KnobStartY);
     wetSlider.setBoundsKnobWithLabel(dampSlider.getRight(), KnobStartY);
     drySlider.setBoundsKnobWithLabel(dampSlider.getRight(), wetSlider.getBottom());
-
-
 }

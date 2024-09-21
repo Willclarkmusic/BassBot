@@ -2884,6 +2884,7 @@
     <ClInclude Include="..\..\Source\UI\ConvDistortionComponent.h"/>
     <ClInclude Include="..\..\Source\UI\CustomComponents.h"/>
     <ClInclude Include="..\..\Source\UI\FilterComponent.h"/>
+    <ClInclude Include="..\..\Source\UI\HorizontalMeter.h"/>
     <ClInclude Include="..\..\Source\UI\MSCompressorComponent.h"/>
     <ClInclude Include="..\..\Source\UI\OscComponent.h"/>
     <ClInclude Include="..\..\Source\UI\OscSubComponent.h"/>

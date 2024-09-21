@@ -3723,6 +3723,9 @@
     <ClInclude Include="..\..\Source\UI\FilterComponent.h">
       <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\UI\HorizontalMeter.h">
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\UI\MSCompressorComponent.h">
       <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>

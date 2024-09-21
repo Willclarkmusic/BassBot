@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PresetComponent.h"
 #include "PluginProcessor.h"
+#include "UI/HorizontalMeter.h"
 
 #include "UI/AHDSRComponent.h"
 #include "UI/OscComponent.h"
@@ -26,7 +27,7 @@
 //==============================================================================
 /**
 */
-class BeastySynth1AudioProcessorEditor  : public juce::AudioProcessorEditor
+class BeastySynth1AudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Timer
 {
 public:
     BeastySynth1AudioProcessorEditor (BeastySynth1AudioProcessor&);
@@ -36,10 +37,11 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void timerCallback() override;
 private:   
     PresetComponent::PresetPanel presetPanel;
     BeastySynth1AudioProcessor& audioProcessor;
-
+    HorizontalMeter meterL, meterR;
 
 
     OscComponent osc1;
@@ -57,6 +59,7 @@ private:
     WaveShaperComponent waveShaper1;
 
     MSCompressorComponent MSCompressor;
+
 
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BeastySynth1AudioProcessorEditor)

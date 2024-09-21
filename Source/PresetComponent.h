@@ -14,7 +14,7 @@
 namespace PresetComponent
 {
     class PresetPanel : public juce::Component, juce::Button::Listener, juce::ComboBox::Listener
-    {
+    {       
     public:
         PresetPanel(Service::PresetManager& pm) : presetManager(pm)
         {
@@ -30,7 +30,6 @@ namespace PresetComponent
             presetList.addListener(this);
 
             loadPresetList();
-
         }
 
         ~PresetPanel()
@@ -39,21 +38,26 @@ namespace PresetComponent
             deleteButton.removeListener(this);
             previousButton.removeListener(this);
             nextButton.removeListener(this);
-
             presetList.removeListener(this);
+        }
+        void paint(juce::Graphics& g) override
+        {
+
         }
 
         void resized() override
         {
             const auto container = getLocalBounds().reduced(5);
             auto bounds = container;
-
+            //
             saveButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.2f)).reduced(5));
             previousButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(5));
             presetList.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.4f)).reduced(5));
             nextButton.setBounds(bounds.removeFromLeft(container.proportionOfWidth(0.1f)).reduced(5));
             deleteButton.setBounds(bounds.reduced(5));
+
         }
+
     private:
         void buttonClicked(juce::Button* button) override 
         {
@@ -118,8 +122,9 @@ namespace PresetComponent
         juce::ComboBox presetList;
         
         std::unique_ptr<juce::FileChooser> fileChooser;
-
+                     
         //==============================================================================
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PresetPanel)
     };
 }
+

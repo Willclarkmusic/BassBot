@@ -34,6 +34,7 @@ public:
    #endif
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void processParameters();
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
@@ -68,6 +69,15 @@ public:
     juce::StringArray getIRDistFiles();
     juce::StringArray getWaveTableFiles();
 
+    float getRmsValue(const int channel) const
+    {
+        jassert(channel == 0 || channel == 1);
+        if (channel == 0)
+            return rmsLevelLeft.getCurrentValue();
+        if (channel == 1)
+            return rmsLevelLeft.getCurrentValue();
+        return 0.0f;
+    }
 
 private:
     Service::PresetManager presetManager;
@@ -79,7 +89,9 @@ private:
 
     MSCompressorData MSCompressor;
 
-    int numVoices = 1;
+    int polyphony = 1;
+
+    juce::LinearSmoothedValue<float> rmsLevelLeft, rmsLevelRight;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BeastySynth1AudioProcessor)

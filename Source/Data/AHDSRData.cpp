@@ -17,15 +17,12 @@ void AHDSRData::setSampleRate(double projSampleRate)
 
 void AHDSRData::noteOn()
 {
-    envelopeValue = 0.0f;
     state = State::Attack;
-    currentSample = 0;
 }
 
 void AHDSRData::noteOff()
 {
     state = State::Release;
-    currentSample = 0;
 }
 
 void AHDSRData::applyEnvelopeToBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples)

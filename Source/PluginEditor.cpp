@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "UI/HorizontalMeter.h"
 
 //==============================================================================
 BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1AudioProcessor& p)
@@ -24,10 +25,12 @@ BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1
     waveShaper1(audioProcessor.apvts, "WSINPUT1", "WSOUTPUT1", "WSTYPE1"),
     MSCompressor(audioProcessor.apvts, "MIDSGAIN", "SIDESGAIN")
 {
-
     setSize (2000, 590);
 
     addAndMakeVisible(&presetPanel);
+    addAndMakeVisible(&meterL);
+    addAndMakeVisible(&meterR);
+    startTimerHz(24);
 
     addAndMakeVisible(&osc1);
     addAndMakeVisible(&osc2);
@@ -41,7 +44,6 @@ BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1
     addAndMakeVisible(&reverb1);
 
     //addAndMakeVisible(MSCompressor);
-
 }
 
 BeastySynth1AudioProcessorEditor::~BeastySynth1AudioProcessorEditor()
@@ -59,6 +61,12 @@ void BeastySynth1AudioProcessorEditor::resized()
 {
     // Preset manager
     presetPanel.setBounds(0, 0, getWidth() / 2, 40);
+
+    // Meter
+    auto meterX = presetPanel.getRight();
+    auto meterY = 0;
+    meterL.setBounds(meterX, meterY, getWidth() - meterX - 20, 15);
+    meterR.setBounds(meterX, meterL.getBottom() + 5, getWidth() - meterX - 20, 15);
 
     // Draw Elements
     // First Row
@@ -84,4 +92,13 @@ void BeastySynth1AudioProcessorEditor::resized()
     waveShaper1.setBounds(oscSub.getRight(), yBot, 250, 150);
 
     //MSCompressor.setBounds(1000, 0, 200, 150);
+}
+
+
+void BeastySynth1AudioProcessorEditor::timerCallback()
+{
+    meterL.setMeterLevel(audioProcessor.getRmsValue(0));
+    meterR.setMeterLevel(audioProcessor.getRmsValue(1));
+    meterL.repaint();
+    meterR.repaint();
 }

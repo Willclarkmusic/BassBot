@@ -26,8 +26,10 @@ BeastySynth1AudioProcessor::BeastySynth1AudioProcessor()
 {
     synth.addSound(new SynthSound());
 
+
+
     // Polyphony
-    for (int i = 0; i < numVoices; i++)
+    for (int i = 0; i < polyphony; i++)
     {
         synth.addVoice(new SynthVoice());
     }
@@ -155,16 +157,22 @@ void BeastySynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
         if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(v)))
         {
             voice->prepareToPlay(sampleRate, samplesPerBlock, getTotalNumOutputChannels());
-
+            polyphony = voice->getNumVoicesToProcess();
             auto& osc2 = voice->getOscillator2();
-            for (int ch = 0; ch < getTotalNumOutputChannels(); ch++)
+
+            for (int v = 0; v < polyphony; v++)
             {
                 auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETABLE");
-                osc2[ch].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
+                osc2[v].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
             }
         }
-    }        
-    MSCompressor.prepareToPlay(spec, sampleRate, samplesPerBlock, getTotalNumInputChannels());
+    }    
+    rmsLevelLeft.reset(sampleRate, 0.5);
+    rmsLevelRight.reset(sampleRate, 0.5);
+    rmsLevelLeft.setCurrentAndTargetValue(-100.0f);
+    rmsLevelRight.setCurrentAndTargetValue(-100.0f);
+
+    //MSCompressor.prepareToPlay(spec, sampleRate, samplesPerBlock, getTotalNumInputChannels());
 }
 
 void BeastySynth1AudioProcessor::releaseResources()
@@ -180,10 +188,6 @@ bool BeastySynth1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
     juce::ignoreUnused (layouts);
     return true;
   #else
-    // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
-    // Some plugin hosts, such as certain GarageBand versions, will only
-    // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
      && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
@@ -199,6 +203,7 @@ bool BeastySynth1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
+//==============================================================================
 void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
@@ -210,10 +215,36 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
 
     auto playHead = this->getPlayHead();
 
+    processParameters();
+      
+    // Master Bus routing
+    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 
-    for (int i = 0; i < synth.getNumVoices(); ++i)
+
+    // Rms Calculations
+    rmsLevelLeft.skip(buffer.getNumSamples());
+    rmsLevelRight.skip(buffer.getNumSamples());
     {
-        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+        const auto valueL = juce::Decibels::gainToDecibels(buffer.getRMSLevel(0, 0, buffer.getNumSamples()));
+        if (valueL < rmsLevelLeft.getCurrentValue())
+            rmsLevelLeft.setTargetValue(valueL);
+        else
+            rmsLevelLeft.setCurrentAndTargetValue(valueL);
+    }
+    {
+        const auto valueR = juce::Decibels::gainToDecibels(buffer.getRMSLevel(1, 0, buffer.getNumSamples()));
+        if (valueR < rmsLevelRight.getCurrentValue())
+            rmsLevelRight.setTargetValue(valueR);
+        else
+            rmsLevelRight.setCurrentAndTargetValue(valueR);
+    }
+}
+
+void BeastySynth1AudioProcessor::processParameters()
+{
+    for (int v = 0; v < synth.getNumVoices(); ++v)
+    {
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(v)))
         {
             // OSC1
             auto& osc1 = voice->getOscillator1();
@@ -227,9 +258,9 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& osc1UniWidth = *apvts.getRawParameterValue("OSC1WIDTH");
             auto& osc1UniSpread = *apvts.getRawParameterValue("OSC1SPREAD");
 
-            for (int i = 0; i < getTotalNumOutputChannels(); i++)
+            for (int i = 0; i < polyphony; i++)
             {
-                osc1[i].updateOscParams(osc1WaveChoice, osc1Macro, osc1Trans, osc1Gain, osc1Pan, 
+                osc1[i].updateOscParams(osc1WaveChoice, osc1Macro, osc1Trans, osc1Gain, osc1Pan,
                     osc1UniVoices, osc1UniWidth, osc1UniSpread);
             }
 
@@ -244,9 +275,9 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& osc2UniWidth = *apvts.getRawParameterValue("OSC2WIDTH");
             auto& osc2UniSpread = *apvts.getRawParameterValue("OSC2SPREAD");
 
-            for (int i = 0; i < getTotalNumOutputChannels(); i++)
+            for (int i = 0; i < polyphony; i++)
             {
-                 osc2[i].updateOscParams(osc2Morph, osc2Trans, osc2Gain, osc2Pan,
+                osc2[i].updateOscParams(osc2Morph, osc2Trans, osc2Gain, osc2Pan,
                     osc2UniVoices, osc2UniWidth, osc2UniSpread);
             }
 
@@ -297,7 +328,7 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& attackSlope2 = *apvts.getRawParameterValue("ATTSL2");
             auto& decaySlope2 = *apvts.getRawParameterValue("DECSL2");
             auto& releaseSlope2 = *apvts.getRawParameterValue("RELSL2");
-            ahdsr2.updateParams(attack2.load(), hold2.load(), decay2.load(), sustain2.load(), release2.load(), 
+            ahdsr2.updateParams(attack2.load(), hold2.load(), decay2.load(), sustain2.load(), release2.load(),
                 attackSlope2.load(), decaySlope2.load(), releaseSlope2.load());
 
             // Conv Distortion
@@ -320,7 +351,7 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
 
             for (int i = 0; i < getTotalNumOutputChannels(); i++)
             {
-                oscSub[i].updateOscParams(oscSubWaveChoice, oscSubMacro, oscSubTrans, oscSubGain);
+                oscSub.updateOscParams(oscSubWaveChoice, oscSubMacro, oscSubTrans, oscSubGain);
             }
 
             // Wave Shapper 1
@@ -335,25 +366,22 @@ void BeastySynth1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, 
             auto& sidesGain = *apvts.getRawParameterValue("SIDESGAIN");
             MSCompressor.updateMSCompParams(midsGain, sidesGain);
         }
-    }    
-
-    
-    // Master Bus routing
-    synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    }
 }
 
 void BeastySynth1AudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
 {
-    for (int i = 0; i < synth.getNumVoices(); ++i)
+    for (int v = 0; v < synth.getNumVoices(); ++v)
     {
-        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+        if (auto voice = dynamic_cast<SynthVoice*>(synth.getVoice(v)))
         {
             // Osc 2
             if (parameterID == "OSC2WAVETABLE")
             {
                 auto& osc2 = voice->getOscillator2();
                 auto& osc2WaveChoice = *apvts.getRawParameterValue("OSC2WAVETABLE");
-                for (int i = 0; i < getTotalNumOutputChannels(); i++)
+
+                for (int i = 0; i < polyphony; i++) 
                 {
                     osc2[i].loadWaveTableFile(static_cast<int>(osc2WaveChoice), getWaveTableFiles());
                 }
@@ -504,13 +532,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout BeastySynth1AudioProcessor::
 
     return { params.begin(), params.end() };
 }
+//==============================================================================
 
 
 juce::StringArray BeastySynth1AudioProcessor::getIRDistFiles()
 {
-    //juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
-    //juce::File resourcesFolder = projectDir.getChildFile("Source").getChildFile("Resources").getChildFile("IRDistortion");
-
     juce::File resourcesFolder =  juce::File::getSpecialLocation(
                                      juce::File::SpecialLocationType::userDocumentsDirectory)
                                      .getChildFile(ProjectInfo::companyName)
@@ -541,10 +567,6 @@ juce::StringArray BeastySynth1AudioProcessor::getIRDistFiles()
 
 juce::StringArray BeastySynth1AudioProcessor::getWaveTableFiles()
 {
-    //juce::File projectDir = juce::File::getCurrentWorkingDirectory().getParentDirectory().getParentDirectory();
-    //juce::File resourcesFolder = projectDir.getChildFile("Source")
-    //    .getChildFile("Resources").getChildFile("WaveTables");
-
     juce::File resourcesFolder = juce::File::getSpecialLocation(
         juce::File::SpecialLocationType::userDocumentsDirectory)
         .getChildFile(ProjectInfo::companyName)
