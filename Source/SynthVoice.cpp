@@ -107,7 +107,6 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float> &outputBuffer, int sta
 
     renderSubBus(oscSubBuffer, startSample, numSamples);
 
-
     // Add OSC chains to output buffer
     for (int channel = 0; channel < outputBuffer.getNumChannels(); channel++)
     {
@@ -129,8 +128,6 @@ void SynthVoice::renderOsc1Bus(juce::AudioBuffer<float>& outputBuffer, int start
     for (int v = 0; v < numVoicesToProcess; v++) // Voices
         osc1[v].renderNextBuffer(osc1Buffer, 0, numSamples);
 
-    juce::dsp::AudioBlock<float> osc1Block{ osc1Buffer };
-
     ahdsr1.applyEnvelopeToBuffer(osc1Buffer, 0, osc1Buffer.getNumSamples());
 
     filter1.process(osc1Buffer);
@@ -148,9 +145,7 @@ void SynthVoice::renderOsc2Bus(juce::AudioBuffer<float>& outputBuffer, int start
     osc2Buffer.clear();
 
     for (int v = 0; v < numVoicesToProcess; v++)
-        osc2[v].renderNextBuffer(osc2Buffer, startSample, numSamples);
-
-    juce::dsp::AudioBlock<float> osc2Block{ osc2Buffer };
+        osc2[v].renderNextBuffer(osc2Buffer, 0, numSamples);
 
     ahdsr1.applyEnvelopeToBuffer(osc2Buffer, 0, osc2Buffer.getNumSamples());
 
@@ -162,13 +157,13 @@ void SynthVoice::renderOsc2Bus(juce::AudioBuffer<float>& outputBuffer, int start
     }
 }
 
-void SynthVoice::renderSubBus(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
+void SynthVoice::renderSubBus(juce::AudioBuffer<float>& buffer, int startSample, int numSamples)
 {
-    oscSub.renderNextBuffer(outputBuffer);
+    oscSub.renderNextBuffer(buffer);
 
-    ahdsr1.applyEnvelopeToBuffer(outputBuffer, 0, outputBuffer.getNumSamples());
+    ahdsr1.applyEnvelopeToBuffer(buffer, 0, buffer.getNumSamples());
 
-    waveShaper1.renderNextBuffer(outputBuffer);
+    waveShaper1.renderNextBuffer(buffer);
 }
 
 

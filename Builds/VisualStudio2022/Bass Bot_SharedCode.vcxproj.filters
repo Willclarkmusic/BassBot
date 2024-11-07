@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Bass Bot\Source\Assets">
+      <UniqueIdentifier>{A022F8BC-EF8D-D174-A246-80AEC4E170CE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Bass Bot\Source\Data">
       <UniqueIdentifier>{150C2B07-BDF0-65E1-7CF3-682E9D3C6FCF}</UniqueIdentifier>
     </Filter>
@@ -733,6 +736,9 @@
     <ClCompile Include="..\..\Source\Data\FilterData.cpp">
       <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Data\LFO1Data.cpp">
+      <Filter>Bass Bot\Source\Data</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Data\MSCompressorData.cpp">
       <Filter>Bass Bot\Source\Data</Filter>
     </ClCompile>
@@ -767,6 +773,9 @@
       <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\FilterComponent.cpp">
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UI\LFO1Component.cpp">
       <Filter>Bass Bot\Source\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\UI\MSCompressorComponent.cpp">
@@ -3604,6 +3613,9 @@
     <ClCompile Include="..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -3687,6 +3699,9 @@
     <ClInclude Include="..\..\Source\Data\FilterData.h">
       <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Data\LFO1Data.h">
+      <Filter>Bass Bot\Source\Data</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Data\MSCompressorData.h">
       <Filter>Bass Bot\Source\Data</Filter>
     </ClInclude>
@@ -3724,6 +3739,9 @@
       <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\HorizontalMeter.h">
+      <Filter>Bass Bot\Source\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UI\LFO1Component.h">
       <Filter>Bass Bot\Source\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\UI\MSCompressorComponent.h">
@@ -7659,6 +7677,9 @@
     <ClInclude Include="..\..\..\..\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
@@ -7667,6 +7688,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Source\Assets\Logo1.png">
+      <Filter>Bass Bot\Source\Assets</Filter>
+    </None>
     <None Include="..\..\..\..\JUCE\modules\juce_audio_devices\native\oboe\src\common\README.md">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe\src\common</Filter>
     </None>

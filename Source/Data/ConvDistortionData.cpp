@@ -38,9 +38,7 @@ void ConvDistortionData::process(juce::AudioBuffer<float>& buffer)
 
     convolutionModule.process(juce::dsp::ProcessContextReplacing<float>(block));
 
-
     dryWetParam.mixWetSamples(block);
-
 }
 
 void ConvDistortionData::updateParams(const int& irIndex, const juce::StringArray& irArray,
@@ -63,7 +61,7 @@ void ConvDistortionData::loadIRFile(const int& irIndex, const juce::StringArray&
         if (selectedIRFile.existsAsFile())
         {          
             convolutionModule.loadImpulseResponse(selectedIRFile,
-                juce::dsp::Convolution::Stereo::no,
+                juce::dsp::Convolution::Stereo::yes,
                 juce::dsp::Convolution::Trim::no, 0,
                 juce::dsp::Convolution::Normalise::yes);
 

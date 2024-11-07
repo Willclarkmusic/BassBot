@@ -10,7 +10,8 @@
 
 #include "OscSubData.h"
 
-void OscSubData::prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRate, int samplesPerBlock, int outputChannels)
+void OscSubData::prepareToPlay(juce::dsp::ProcessSpec spec, double sampleRate, 
+                                int samplesPerBlock, int outputChannels)
 {
     resetAll();
 
@@ -38,7 +39,8 @@ void OscSubData::renderNextBuffer(juce::AudioBuffer<float>& audioBuffer)
     oscGain.process(juce::dsp::ProcessContextReplacing<float>(audioBlock));
 }
 
-void OscSubData::updateOscParams(const int oscWaveChoice, const float osc1Macro, const int transposition, const float gain)
+void OscSubData::updateOscParams(const int oscWaveChoice, const float osc1Macro, 
+                                    const int transposition, const float gain)
 {
     setWaveType(oscWaveChoice);
     setOscGain(gain);

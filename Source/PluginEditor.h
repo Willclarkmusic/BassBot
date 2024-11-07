@@ -43,6 +43,9 @@ private:
     BeastySynth1AudioProcessor& audioProcessor;
     HorizontalMeter meterL, meterR;
 
+    int totalWidth = 1100;
+    int totalHeight = 590;
+    juce::Image logo1;
 
     OscComponent osc1;
     FilterComponent filter1;

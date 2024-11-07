@@ -6,6 +6,9 @@
               pluginFormats="buildAU,buildAUv3,buildStandalone,buildUnity,buildVST3">
   <MAINGROUP id="lNRTCf" name="Bass Bot">
     <GROUP id="{613AEEB8-A650-72D9-3562-05776277BAFC}" name="Source">
+      <GROUP id="{575ADBF6-12FF-C3A4-C2C8-9322DC911A3C}" name="Assets">
+        <FILE id="oVJc0h" name="Logo1.png" compile="0" resource="1" file="Source/Assets/Logo1.png"/>
+      </GROUP>
       <FILE id="svVLWZ" name="PresetComponent.h" compile="0" resource="0"
             file="Source/PresetComponent.h"/>
       <FILE id="YnOSRZ" name="PresetManager.cpp" compile="1" resource="0"
@@ -32,6 +35,8 @@
               file="Source/Data/ConvDistortionData.h"/>
         <FILE id="HsEF1A" name="FilterData.cpp" compile="1" resource="0" file="Source/Data/FilterData.cpp"/>
         <FILE id="lqVX14" name="FilterData.h" compile="0" resource="0" file="Source/Data/FilterData.h"/>
+        <FILE id="qoFD1t" name="LFO1Data.cpp" compile="1" resource="0" file="Source/Data/LFO1Data.cpp"/>
+        <FILE id="k4noJt" name="LFO1Data.h" compile="0" resource="0" file="Source/Data/LFO1Data.h"/>
         <FILE id="w8p8KZ" name="MSCompressorData.cpp" compile="1" resource="0"
               file="Source/Data/MSCompressorData.cpp"/>
         <FILE id="v9CVkK" name="MSCompressorData.h" compile="0" resource="0"
@@ -74,6 +79,9 @@
               file="Source/UI/FilterComponent.h"/>
         <FILE id="HS7dQE" name="HorizontalMeter.h" compile="0" resource="0"
               file="Source/UI/HorizontalMeter.h"/>
+        <FILE id="zcFw8g" name="LFO1Component.cpp" compile="1" resource="0"
+              file="Source/UI/LFO1Component.cpp"/>
+        <FILE id="U301lI" name="LFO1Component.h" compile="0" resource="0" file="Source/UI/LFO1Component.h"/>
         <FILE id="z1Fw23" name="MSCompressorComponent.cpp" compile="1" resource="0"
               file="Source/UI/MSCompressorComponent.cpp"/>
         <FILE id="qZxpQK" name="MSCompressorComponent.h" compile="0" resource="0"

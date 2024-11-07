@@ -25,7 +25,7 @@ BeastySynth1AudioProcessorEditor::BeastySynth1AudioProcessorEditor (BeastySynth1
     waveShaper1(audioProcessor.apvts, "WSINPUT1", "WSOUTPUT1", "WSTYPE1"),
     MSCompressor(audioProcessor.apvts, "MIDSGAIN", "SIDESGAIN")
 {
-    setSize (2000, 590);
+    setSize (totalWidth, totalHeight);
 
     addAndMakeVisible(&presetPanel);
     addAndMakeVisible(&meterL);
@@ -55,6 +55,11 @@ void BeastySynth1AudioProcessorEditor::paint (juce::Graphics& g)
 {
     g.fillAll(juce::Colours::darkgrey);
     g.setFont (juce::FontOptions (10.0f));
+
+    logo1 = juce::ImageCache::getFromMemory(BinaryData::Logo1_png, BinaryData::Logo1_pngSize);
+    g.drawImageWithin(logo1, totalWidth - logo1.getWidth(), totalHeight - logo1.getHeight(), 
+        logo1.getWidth(), logo1.getHeight(), juce::RectanglePlacement::stretchToFit);
+
 }
 
 void BeastySynth1AudioProcessorEditor::resized()
@@ -71,15 +76,16 @@ void BeastySynth1AudioProcessorEditor::resized()
     // Draw Elements
     // First Row
     int yFirst = 41;
-    osc1.setBounds(0, yFirst, 600, 150);
-    filter1.setBounds(osc1.getRight(), yFirst, 350, 150);
-    convDist1.setBounds(filter1.getRight(), yFirst, 250, 150);
-    reverb1.setBounds(convDist1.getRight(), yFirst, 400, 150);
+    osc1.setBounds(0, yFirst, 500, 150);
+    filter1.setBounds(osc1.getRight(), yFirst, 250, 150);
+    convDist1.setBounds(filter1.getRight(), yFirst, 200, 150);
+
     
     // Second Row
     int ySecond = osc1.getBottom();
-    osc2.setBounds(0, ySecond, 600, 150);
-    filter2.setBounds(osc2.getRight(), ySecond, 350, 150);
+    osc2.setBounds(0, ySecond, 500, 150);
+    filter2.setBounds(osc2.getRight(), ySecond, 250, 150);
+    reverb1.setBounds(filter2.getRight(), ySecond, 350, 150);
 
     // Third Row 
     int yThird = osc2.getBottom();
@@ -89,7 +95,7 @@ void BeastySynth1AudioProcessorEditor::resized()
     // Bottom Row
     int yBot = ahdsr1.getBottom();
     oscSub.setBounds(0, yBot, 250, 150);
-    waveShaper1.setBounds(oscSub.getRight(), yBot, 250, 150);
+    waveShaper1.setBounds(oscSub.getRight(), yBot, 200, 150);
 
     //MSCompressor.setBounds(1000, 0, 200, 150);
 }

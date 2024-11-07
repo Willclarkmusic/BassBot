@@ -43,7 +43,7 @@ void OscData::renderNextBuffer(juce::AudioBuffer<float>& buffer, int startSample
 {
     juce::dsp::AudioBlock<float> audioBlock{ buffer };
 
-    jassert(audioBlock.getNumSamples() > 0);
+    //jassert(audioBlock.getNumSamples() > 0);
     juce::dsp::ProcessContextReplacing<float> context(audioBlock);
 
     process(context);

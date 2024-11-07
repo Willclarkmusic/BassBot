@@ -25,8 +25,6 @@ public:
     void renderNextBuffer(juce::AudioBuffer<float>& buffer, int startSample, int numSamples);
     void setWaveFrequency(const int midiNoteNumber);
 
-    float getNextSample();
-
     void updateOscParams(const float& morph, const int& transposition,
         const float& gain, const float& pan, const int& uniVoices, const float& uniWidth,
         const float& uniSpread);
